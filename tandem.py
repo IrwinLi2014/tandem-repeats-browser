@@ -109,11 +109,13 @@ def search_short(s, ws, n, m=0, a='ATCG'):
 # Input: n - lower boundary of repeats
 # Input: s - the sequence to be searched (String)
 # Input: m - mismatch tolerance (int)
+# Input: a - alphabet of possible letters in sequence (String)
 # Output: L - list of tuples reppresenting found repeats ( (int, int, int)[] )
-def search_long(start, n, s, m):
+def search_long(start, n, s, m, a='ATCG'):
     l = len(s)
     bw = bw_transform(s, l)
-    # print(bw)
+    for r in bw:
+        print(r)
     L=[]
     i = 0
     index1=0
@@ -128,12 +130,33 @@ def search_long(start, n, s, m):
         # print (pattern)
         index2
         j = i+1
+        # keep the records 
+        record=[]
+        for i_pattern in range(pattern):
+            dic = {}
+            for letter in a:
+                dic[letter] = 0
+            dic[bw[i][i_pattern]] = 1
+            record.append(dic)
         while (j < l-1):
             #  check index
             if (abs(int(bw[j-1][l:]) - int(bw[j][l:])) != pattern) :
                 break
             # check complete match
-            if (str_match(bw[i][:pattern], bw[j][:pattern], m)) :
+            consensus = ""
+            for i_pattern in range (pattern):
+                consensus += max(record[i_pattern], key=record[i_pattern].get)
+            # print("consensus before")
+            # print(consensus)
+            if (str_match(consensus, bw[j][:pattern], m)) :
+                # update record
+                for i_pattern in range (pattern):   
+                    record[i_pattern][bw[j][i_pattern]] += 1
+                # print("consensus after")
+                # consensus = ""
+                # for i_pattern in range (pattern):
+                #     consensus += max(record[i_pattern], key=record[i_pattern].get)
+                # print(consensus)
                 index2 = int(bw[j][l:])
                 j += 1
             else :
@@ -170,7 +193,6 @@ def printrepeats(s, output):
 #def stitch():
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         description='Finding tandem repeats.')
 
@@ -193,12 +215,12 @@ if __name__ == "__main__":
     bond = int(math.log(w,4))
     print(bond)
     for i in range (k):
-        output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m))
+        output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
         print(output)
-        output[i].extend(search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, m, 'ATCG'))
+        # output[i].extend(search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, m, 'ATCG'))
     #stitch()
-        print(output)
-        print()
+        # print(output)
+        # print()
     printrepeats (s,output)
 
 
