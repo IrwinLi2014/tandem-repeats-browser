@@ -92,7 +92,7 @@ def search_short(s, ws, n, m=0, a='ATCG'):
                 if i+lenuu<=lens and str_match(s[i:i+lenuu], uu, m):
                     j = i+lenuu
                     k = j
-                    while j<lens and str_match(s[j:k+1], uu[0:k-j+1], m):
+                    while k<lens+1 and str_match(s[j:k+1], uu[0:k-j+1], m):
                         k += 1
                         if k-j>=lenuu:
                             j += lenuu
