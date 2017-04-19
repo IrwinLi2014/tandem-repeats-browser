@@ -20,6 +20,8 @@ import argparse
 import math
 from math import ceil
 from itertools import permutations
+#from Bio import pairwise2
+#from Bio.pairwise2 import format_alignment
 
 def bw_transform(s, n):
     # this line referenced the code in https://gist.github.com/dmckean/9723bc06254809e9068f
@@ -64,6 +66,7 @@ def cyclic_update(nl, s, ws, l):
     for i in range(len(nl)):
         nl[i] = nl[i]+ws
     l.append(nl)
+    #print(l)
     return l
 
 # Input: 
@@ -77,8 +80,7 @@ def cyclic_update(nl, s, ws, l):
 # Input: m - mismatch tolerance (int)
 # Input: a - alphabet of possible letters in sequence (String)
 # Output: l - list of int tuples representing all found repeats  ([(int, int, int)])
-def search_short(s, ws, n, m=0, a='ATCG'):
-    l = []
+def search_short(s, ws, n, l, m=0, a='ATCG'):
     lens = len(s)
     for lamb in range(n):
         combi = [''.join(cb) for cb in permutations(a, lamb)]
@@ -217,11 +219,13 @@ if __name__ == "__main__":
     for i in range (k):
         output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
         print(output)
-        # output[i].extend(search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, m, 'ATCG'))
+        search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
+        #print(li)
+        #output[i].extend(li)
     #stitch()
-        # print(output)
-        # print()
-    printrepeats (s,output)
+        print(output)
+        #print()
+    #printrepeats (s,output)
 
 
 
