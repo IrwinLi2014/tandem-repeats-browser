@@ -40,6 +40,16 @@ def str_match(str1, str2, m=0):
                 return False
     return True
 
+# get consensus reference pattern from records of previous repeats
+# Input: record - list of dictionaries recording the number of each letter's appearance in each position ([dictionary*pattern])
+# Input: pattern - leagth of pattern (int)
+# Output: consensus pattern
+def get_consensus(record, pattern):
+    consensus = ""
+    for i_pattern in range (pattern):
+                consensus += max(record[i_pattern], key=record[i_pattern].get)
+    return consensus
+
 # Input: nl - new potential item of l, with indices in current window (int, int, int)
 # Input: s - the sequence to be searched, current window (String)
 # Input: ws - the start index of the current window (int)
@@ -128,8 +138,6 @@ def search_long(start, n, s, m, a='ATCG'):
         if (pattern<n) :
             i+=1
             continue
-        # print ("pattern:")
-        # print (pattern)
         index2
         j = i+1
         # keep the records 
@@ -142,23 +150,16 @@ def search_long(start, n, s, m, a='ATCG'):
             record.append(dic)
         while (j < l-1):
             #  check index
-            if (abs(int(bw[j-1][l:]) - int(bw[j][l:])) != pattern) :
-                break
+            # if (abs(int(bw[j-1][l:]) - int(bw[j][l:])) != pattern) :
+            #     break
             # check complete match
-            consensus = ""
-            for i_pattern in range (pattern):
-                consensus += max(record[i_pattern], key=record[i_pattern].get)
-            # print("consensus before")
-            # print(consensus)
-            if (str_match(consensus, bw[j][:pattern], m)) :
+            if (str_match(get_consensus(record, pattern), bw[j][:pattern], m)) :
                 # update record
+                # print(get_consensus(record, pattern))
                 for i_pattern in range (pattern):   
                     record[i_pattern][bw[j][i_pattern]] += 1
-                # print("consensus after")
-                # consensus = ""
-                # for i_pattern in range (pattern):
-                #     consensus += max(record[i_pattern], key=record[i_pattern].get)
-                # print(consensus)
+                # print(get_consensus(record, pattern))
+                # print()
                 index2 = int(bw[j][l:])
                 j += 1
             else :
@@ -168,18 +169,39 @@ def search_long(start, n, s, m, a='ATCG'):
             i = j;
         else:
             # repeat found
-            # check partial match
-            if (index1>index2) :
+			# extend forwards
+            if (index1>index2):
                 index1, index2 = index2, index1
+            while (index1-pattern>=0 and str_match(get_consensus(record, pattern), s[index1-pattern:index1], m)):
+                # update record
+                # print(get_consensus(record, pattern))
+                for i_pattern in range (pattern):   
+                    record[i_pattern][s[index1+i_pattern]] += 1
+                # print(get_consensus(record, pattern))
+                # print()
+                index1 -= pattern
+            # extend backwards
+            while (index2+2*pattern<=l and str_match(get_consensus(record, pattern), s[index2+pattern:index2+2*pattern], m)):
+                j+=1
+                index2 += pattern
+                # update record
+                # print(get_consensus(record, pattern))
+                for i_pattern in range (pattern):   
+                    record[i_pattern][s[index2+i_pattern]] += 1
+                # print(get_consensus(record, pattern))
+                # print()
             end = min (index2+pattern-1, l-1)
+            # check partial match in the end
             for k in range (pattern-1,0,-1):
                 if (end+k >= l):
                     continue
-                if (str_match(s[start+index1:start+index1+k], s[start+index2+pattern:start+index2+pattern+k], m)):
+                if (str_match(get_consensus(record, pattern)[:k], s[index2+pattern:index2+pattern+k], m)):
                     end += k
                     break
             # update i
             i = j;
+            print(get_consensus(record, pattern))
+            print()
             cyclic_update( [start+index1, start+index1+pattern-1, start+end], s, start, L )
     return L
 
@@ -215,17 +237,15 @@ if __name__ == "__main__":
     k = ceil(L/w)
     output=[]    
     bond = int(math.log(w,4))
-    print(bond)
+    print(L)
     for i in range (k):
         output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
         print(output)
         search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
-        #print(li)
-        #output[i].extend(li)
     #stitch()
         print(output)
-        #print()
-    #printrepeats (s,output)
+        print()
+    printrepeats (s,output)
 
 
 
