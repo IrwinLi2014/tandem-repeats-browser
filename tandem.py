@@ -20,8 +20,8 @@ import argparse
 import math
 from math import ceil
 from itertools import permutations
-#from Bio import pairwise2
-#from Bio.pairwise2 import format_alignment
+from Bio import pairwise2
+from Bio.pairwise2 import format_alignment
 
 def bw_transform(s, n):
     # this line referenced the code in https://gist.github.com/dmckean/9723bc06254809e9068f
@@ -32,13 +32,23 @@ def bw_transform(s, n):
 # Input:  m - number of mismatches allowed (int)
 # Output:  strings match or not (boolean)
 def str_match(str1, str2, m=0):
-    err = 0
+    """err = 0
     for i in range(len(str1)):
         if str1[i] != str2[i]:
             err += 1
             if err > m:
                 return False
-    return True
+    return True"""
+    if m==0:
+        return str1==str2
+    else:
+        score = pairwise2.align.globalms(str1, str2, float(m/100), float((m/100)-1), float((m/100)-1), float((m/100)-1), score_only=True)
+        print(type(score))
+        if (type(score)!=float):
+            print("!!!")
+        print(score, float(m/100), float((m/100)-1))
+        print("HERE")
+        return (score>=0)
 
 # get consensus reference pattern from records of previous repeats
 # Input: record - list of dictionaries recording the number of each letter's appearance in each position ([dictionary*pattern])
@@ -126,8 +136,8 @@ def search_short(s, ws, n, l, m=0, a='ATCG'):
 def search_long(start, n, s, m, a='ATCG'):
     l = len(s)
     bw = bw_transform(s, l)
-    for r in bw:
-        print(r)
+    #for r in bw:
+        #print(r)
     L=[]
     i = 0
     index1=0
@@ -200,8 +210,8 @@ def search_long(start, n, s, m, a='ATCG'):
                     break
             # update i
             i = j;
-            print(get_consensus(record, pattern))
-            print()
+            #print(get_consensus(record, pattern))
+            #print()
             cyclic_update( [start+index1, start+index1+pattern-1, start+end], s, start, L )
     return L
 
@@ -237,7 +247,7 @@ if __name__ == "__main__":
     k = ceil(L/w)
     output=[]    
     bond = int(math.log(w,4))
-    print(L)
+    #print(L)
     for i in range (k):
         output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
         print(output)
@@ -246,6 +256,10 @@ if __name__ == "__main__":
         print(output)
         print()
     printrepeats (s,output)
+
+    #a =  pairwise2.align.localms("ACCGT", "ACG", 1, -10, -10, -10, score_only=True)
+    
+
 
 
 
