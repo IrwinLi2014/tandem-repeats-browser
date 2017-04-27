@@ -45,7 +45,7 @@ def str_match(str1, str2, m=0):
         score = pairwise2.align.globalms(str1, str2, float(m/100), float((m/100)-1), float((m/100)-1), float((m/100)-1), score_only=True)
         print(type(score))
         if (type(score)!=float):
-            print("!!!")
+            return False
         print(score, float(m/100), float((m/100)-1))
         print("HERE")
         return (score>=0)
