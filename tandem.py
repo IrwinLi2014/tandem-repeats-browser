@@ -219,7 +219,25 @@ def search_long(start, n, s, m, a='ATCG'):
             # print(start+index1, start+index1+pattern-1, start+end)
             # print(get_consensus(record, pattern))
             # print()
-            cyclic_update( [start+index1, start+index1+pattern-1, start+end], s, start, L )
+            cyclic_update( [index1, index1+pattern-1, end], s, start, L )
+    return L
+
+# stitch together repeats that cross windows
+# Input: L - list of results to be stitched together ([[]])
+# Input: w - window size, int
+# Input: rate - rate of window overlap, float
+def stitch(L, w, rate):
+    lenl = len(L)
+    for i in range(lenl):
+        if i!=0:
+            # stitch with the window before the current window
+            for li in L[i-1]:
+                if li[2]>=int(rate*(i-1)*w)+w-1:
+                    for cli in L[i]:
+                        if cli[0]<=int(rate*(i-1)*w)+w-1 and li[1]-li[0]==cli[1]-cli[0]:
+                            cli[0] = li[0]
+                            cli[1] = li[1]
+                            L[i-1].remove(li)
     return L
 
 def printrepeats(s, output):
@@ -259,7 +277,7 @@ if __name__ == "__main__":
         # if (total%5 == 0):
         #     print(total)
         #     total=0
-        if(i>1):
+        if(i>0):
             break
         buffer = resi + str(fasta.seq).upper().strip('N')
         if (len(buffer)<w):
@@ -270,77 +288,17 @@ if __name__ == "__main__":
             s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
             output.append(search_long(int(i*3*w/4), bond+1, s, m, 'ATCG'))
             search_short(s, int(i*3*w/4), bond+1, output[i], m, 'ATCG')
-            print("buffer len",len(buffer))
-            print("buffer start", int(w*j*3/4))
-            print("buffer end", int(w*j*3/4)+w-1)
+            print(i,"window finished")
             sys.stdout.flush()
-            # print()
             # printrepeats (s,output)
             j+=1
             i+=1
         resi=buffer[int(j*w*3/4):]
-    # # if(len(resi)>0):
-    # #     search(resi)
-    # # stitch()
+    if(len(resi)>0):
+        output.append(search_long(int(i*3*w/4), bond+1, resi, m, 'ATCG'))
+        search_short(resi, int(i*3*w/4), bond+1, output[i], m, 'ATCG')
+        
+    stitch(output, w, float(3/4))
     # print(len(output))
     # for l in output:
     #     print(len(l))
-#=======================================================
-    # s = s[:w]
-    # L = len(s)
-    # print("L", L)
-    # # print(s[:w])
-    # # if (w < 0) :
-    # #     w = 100000
-    # # # window number
-    # k = ceil(L/w)
-    # output=[]  
-    # bond = int(math.log(w,4))
-    # #print(L)
-    # for i in range (k):
-    #     output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
-    #     print(output)
-    #     print()
-    #     search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
-    # # stitch()
-    #     print(output)
-    #     print()
-    # printrepeats (s,output)
-
-    #a =  pairwise2.align.localms("ACCGT", "ACG", 1, -10, -10, -10, score_only=True)
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
