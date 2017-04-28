@@ -43,11 +43,9 @@ def str_match(str1, str2, m=0):
         return str1==str2
     else:
         score = pairwise2.align.globalms(str1, str2, float(m/100), float((m/100)-1), float((m/100)-1), float((m/100)-1), score_only=True)
-        print(type(score))
         if (type(score)!=float):
             return False
-        print(score, float(m/100), float((m/100)-1))
-        print("HERE")
+        # print(score)
         return (score>=0)
 
 # get consensus reference pattern from records of previous repeats
@@ -136,8 +134,8 @@ def search_short(s, ws, n, l, m=0, a='ATCG'):
 def search_long(start, n, s, m, a='ATCG'):
     l = len(s)
     bw = bw_transform(s, l)
-    #for r in bw:
-        #print(r)
+    for r in bw:
+        print(r)
     L=[]
     i = 0
     index1=0
@@ -145,13 +143,14 @@ def search_long(start, n, s, m, a='ATCG'):
     while i < l-1:
         index1 = int(bw[i][l:])
         pattern = abs(int(bw[i][l:]) - int(bw[i+1][l:]))
-        if (pattern<n) :
+        if (int(bw[i][l:])+pattern>l or int(bw[i+1][l:])+pattern>l or pattern <n) :
             i+=1
             continue
         index2
         j = i+1
         # keep the records 
         record=[]
+        print(pattern)
         for i_pattern in range(pattern):
             dic = {}
             for letter in a:
@@ -160,9 +159,12 @@ def search_long(start, n, s, m, a='ATCG'):
             record.append(dic)
         while (j < l-1):
             #  check index
-            # if (abs(int(bw[j-1][l:]) - int(bw[j][l:])) != pattern) :
-            #     break
+            if (abs(int(bw[j-1][l:]) - int(bw[j][l:])) != pattern) :
+                break
             # check complete match
+            # print("i", i)
+            # print("j", j)
+            # print("j", bw[j][:pattern])
             if (str_match(get_consensus(record, pattern), bw[j][:pattern], m)) :
                 # update record
                 # print(get_consensus(record, pattern))
@@ -174,9 +176,11 @@ def search_long(start, n, s, m, a='ATCG'):
                 j += 1
             else :
                 break
-        if (j-i==1) :
+        
+        if (j-i<=1) :
             # repeat not found
             i = j;
+            continue;
         else:
             # repeat found
 			# extend forwards
@@ -185,11 +189,11 @@ def search_long(start, n, s, m, a='ATCG'):
             while (index1-pattern>=0 and str_match(get_consensus(record, pattern), s[index1-pattern:index1], m)):
                 # update record
                 # print(get_consensus(record, pattern))
+                index1 -= pattern
                 for i_pattern in range (pattern):   
                     record[i_pattern][s[index1+i_pattern]] += 1
                 # print(get_consensus(record, pattern))
                 # print()
-                index1 -= pattern
             # extend backwards
             while (index2+2*pattern<=l and str_match(get_consensus(record, pattern), s[index2+pattern:index2+2*pattern], m)):
                 j+=1
@@ -210,8 +214,9 @@ def search_long(start, n, s, m, a='ATCG'):
                     break
             # update i
             i = j;
-            #print(get_consensus(record, pattern))
-            #print()
+            print(start+index1, start+index1+pattern-1, start+end)
+            print(get_consensus(record, pattern))
+            print()
             cyclic_update( [start+index1, start+index1+pattern-1, start+end], s, start, L )
     return L
 
