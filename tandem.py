@@ -238,6 +238,7 @@ def stitch(L, w, rate):
                             cli[0] = li[0]
                             cli[1] = li[1]
                             L[i-1].remove(li)
+                            break
     return L
 
 def printrepeats(s, output):
@@ -277,8 +278,6 @@ if __name__ == "__main__":
         # if (total%5 == 0):
         #     print(total)
         #     total=0
-        if(i>0):
-            break
         buffer = resi + str(fasta.seq).upper().strip('N')
         if (len(buffer)<w):
             continue
@@ -297,8 +296,12 @@ if __name__ == "__main__":
     if(len(resi)>0):
         output.append(search_long(int(i*3*w/4), bond+1, resi, m, 'ATCG'))
         search_short(resi, int(i*3*w/4), bond+1, output[i], m, 'ATCG')
-        
+    print("start stitch")    
+    sys.stdout.flush()
     stitch(output, w, float(3/4))
+    print("start finished")    
+    sys.stdout.flush()
+    print(output)
     # print(len(output))
     # for l in output:
     #     print(len(l))
