@@ -246,40 +246,50 @@ if __name__ == "__main__":
     w=args.window
     s=args.sequence
     fasta_sequences = SeqIO.parse(open(s), 'fasta')
+    output=[]
     resi=""
-
     # sliding windows
     for fasta in fasta_sequences:
         buffer = resi + str(fasta.seq).upper().strip('N')
         if (len(buffer)>=w):
             s=buffer[:w]
-            search(s) # TODO: implement search()
+            # search(s)  TODO: implement search()
+            bond = int(math.log(w,4))
+            output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
+            search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
+            # stitch()
+            print(output)
+            print()
+            printrepeats (s,output)
+
             resi=buffer[int(3*w/4):]
+            break
         else:
             resi=buffer
-    if(len(resi)>w):
-        print(resi[w:])
-#=======================================================
-    s = s[:w]
-    L = len(s)
-    print("L", L)
-    # print(s[:w])
-    # if (w < 0) :
-    #     w = 100000
-    # # window number
-    k = ceil(L/w)
-    output=[]  
-    bond = int(math.log(w,4))
-    #print(L)
-    for i in range (k):
-        output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
-        print(output)
-        print()
-        search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
+    # if(len(resi)>w):
+    #     print(resi[w:])
     # stitch()
-        print(output)
-        print()
-    printrepeats (s,output)
+#=======================================================
+    # s = s[:w]
+    # L = len(s)
+    # print("L", L)
+    # # print(s[:w])
+    # # if (w < 0) :
+    # #     w = 100000
+    # # # window number
+    # k = ceil(L/w)
+    # output=[]  
+    # bond = int(math.log(w,4))
+    # #print(L)
+    # for i in range (k):
+    #     output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
+    #     print(output)
+    #     print()
+    #     search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
+    # # stitch()
+    #     print(output)
+    #     print()
+    # printrepeats (s,output)
 
     #a =  pairwise2.align.localms("ACCGT", "ACG", 1, -10, -10, -10, score_only=True)
     
