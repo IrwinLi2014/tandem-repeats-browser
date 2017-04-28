@@ -23,6 +23,7 @@ from itertools import permutations
 from Bio import pairwise2
 from Bio.pairwise2 import format_alignment
 from Bio import SeqIO
+import sys
 
 def bw_transform(s, n):
     # this line referenced the code in https://gist.github.com/dmckean/9723bc06254809e9068f
@@ -239,6 +240,7 @@ if __name__ == "__main__":
     parser.add_argument('-m', '--mismatch', help='Mismatch tolerance in percentage.', type=int, default=0)
     parser.add_argument('-w', '--window', help='Window size.', type=int, default=-1)
     parser.add_argument('-s', '--sequence', help='sequence to be searched', type=str)
+    parser.add_argument('-a', '--alpha', help='sequence to be searched', type=str)
     
     args = parser.parse_args()
 
@@ -247,28 +249,42 @@ if __name__ == "__main__":
     s=args.sequence
     fasta_sequences = SeqIO.parse(open(s), 'fasta')
     output=[]
+    bond = int(math.log(w,4))
     resi=""
-    # sliding windows
+    # window index
+    i = 0
+    # total = 0
     for fasta in fasta_sequences:
-        buffer = resi + str(fasta.seq).upper().strip('N')
-        if (len(buffer)>=w):
-            s=buffer[:w]
-            # search(s)  TODO: implement search()
-            bond = int(math.log(w,4))
-            output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
-            search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
-            # stitch()
-            print(output)
-            print()
-            printrepeats (s,output)
-
-            resi=buffer[int(3*w/4):]
+        # total += (len(fasta))
+        # if (total%5 == 0):
+        #     print(total)
+        #     total=0
+        if(i>1):
             break
-        else:
-            resi=buffer
-    # if(len(resi)>w):
-    #     print(resi[w:])
-    # stitch()
+        buffer = resi + str(fasta.seq).upper().strip('N')
+        if (len(buffer)<w):
+            continue
+        #  local index
+        j = 0
+        while (int(w*(j+1)*3/4)<=len(buffer)):
+            s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
+            output.append(search_long(int(i*3*w/4), bond+1, s, m, 'ATCG'))
+            search_short(s, int(i*3*w/4), bond+1, output[i], m, 'ATCG')
+            print("buffer len",len(buffer))
+            print("buffer start", int(w*j*3/4))
+            print("buffer end", int(w*j*3/4)+w-1)
+            sys.stdout.flush()
+            # print()
+            # printrepeats (s,output)
+            j+=1
+            i+=1
+        resi=buffer[int(j*w*3/4):]
+    # # if(len(resi)>0):
+    # #     search(resi)
+    # # stitch()
+    # print(len(output))
+    # for l in output:
+    #     print(len(l))
 #=======================================================
     # s = s[:w]
     # L = len(s)
