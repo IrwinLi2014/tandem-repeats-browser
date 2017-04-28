@@ -70,16 +70,16 @@ def cyclic_update(nl, s, ws, l):
             nlpat = s[nl[0]:nl[1]+1]
             patlen = len(lipat)
             for j in range(patlen):
-                if lipat[j:patlen]+lipat[0:j] == nlpat and li[2]-ws==nl[2]:
+                if li[1]-li[0]==nl[1]-nl[0] and min(li[2]-ws,nl[2]) - max(li[0]-ws,nl[0]) >= patlen:
                     # cyclic item already included
                     if nl[0]<li[0]-ws:
                         # new item longer, update existing item
                         li[0] = nl[0]+ws
                         li[1] = nl[1]+ws
-                        return l
-                    else:
-                        # new item not as long, simply ignore new item
-                        return l
+                    if nl[2]>li[2]-ws:
+                        # new item longer, update existing item
+                        li[2] = nl[2]+ws
+                    return l
     # no cyclic item included
     for i in range(len(nl)):
         nl[i] = nl[i]+ws
