@@ -22,6 +22,7 @@ from math import ceil
 from itertools import permutations
 from Bio import pairwise2
 from Bio.pairwise2 import format_alignment
+from Bio import SeqIO
 
 def bw_transform(s, n):
     # this line referenced the code in https://gist.github.com/dmckean/9723bc06254809e9068f
@@ -45,7 +46,6 @@ def str_match(str1, str2, m=0):
         score = pairwise2.align.globalms(str1, str2, float(m/100), float((m/100)-1), float((m/100)-1), float((m/100)-1), score_only=True)
         if (type(score)!=float):
             return False
-        print(str1, str2, score)
         return (score>=0)
 
 # get consensus reference pattern from records of previous repeats
@@ -83,13 +83,11 @@ def cyclic_update(nl, s, ws, l):
                         li[0] = nl[0]+ws
                         li[1] = nl[1]+ws
                         li[2] = nl[2]+ws
-                    print(l)
                     return l
     # no cyclic item included
     for i in range(len(nl)):
         nl[i] = nl[i]+ws
     l.append(nl)
-    #print(l)
     return l
 
 # Input: 
@@ -111,7 +109,6 @@ def search_short(s, ws, n, l, m=0, a='ATCG'):
             if u=='':
                 continue;
             uu = u + u
-            #print(uu)
             for i in range(lens):
                 lenuu = len(uu)
                 if i+lenuu<=lens and str_match(s[i:i+lenuu], uu, m):
@@ -139,8 +136,8 @@ def search_short(s, ws, n, l, m=0, a='ATCG'):
 def search_long(start, n, s, m, a='ATCG'):
     l = len(s)
     bw = bw_transform(s, l)
-    for r in bw:
-        print(r)
+    # for r in bw:
+    #     print(r)
     L=[]
     i = 0
     index1=0
@@ -155,7 +152,6 @@ def search_long(start, n, s, m, a='ATCG'):
         j = i+1
         # keep the records 
         record=[]
-        print(pattern)
         for i_pattern in range(pattern):
             dic = {}
             for letter in a:
@@ -219,9 +215,9 @@ def search_long(start, n, s, m, a='ATCG'):
                     break
             # update i
             i = j;
-            print(start+index1, start+index1+pattern-1, start+end)
-            print(get_consensus(record, pattern))
-            print()
+            # print(start+index1, start+index1+pattern-1, start+end)
+            # print(get_consensus(record, pattern))
+            # print()
             cyclic_update( [start+index1, start+index1+pattern-1, start+end], s, start, L )
     return L
 
@@ -249,20 +245,38 @@ if __name__ == "__main__":
     m=args.mismatch
     w=args.window
     s=args.sequence
+    fasta_sequences = SeqIO.parse(open(s), 'fasta')
+    resi=""
 
+    # sliding windows
+    for fasta in fasta_sequences:
+        buffer = resi + str(fasta.seq).upper().strip('N')
+        if (len(buffer)>=w):
+            s=buffer[:w]
+            search(s) # TODO: implement search()
+            resi=buffer[int(3*w/4):]
+        else:
+            resi=buffer
+    if(len(resi)>w):
+        print(resi[w:])
+#=======================================================
+    s = s[:w]
     L = len(s)
-    if (w < 0) :
-        w = 100000
-    # window number
+    print("L", L)
+    # print(s[:w])
+    # if (w < 0) :
+    #     w = 100000
+    # # window number
     k = ceil(L/w)
-    output=[]    
+    output=[]  
     bond = int(math.log(w,4))
     #print(L)
     for i in range (k):
         output.append(search_long(i*w, bond+1, s[i*w : (i+1)*w if (i+1)*w<=L else L], m, 'ATCG'))
         print(output)
+        print()
         search_short(s[i*w : (i+1)*w if (i+1)*w<=L else L], i*w, bond+1, output[i], m, 'ATCG')
-    #stitch()
+    # stitch()
         print(output)
         print()
     printrepeats (s,output)
