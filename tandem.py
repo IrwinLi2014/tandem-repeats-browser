@@ -45,7 +45,7 @@ def str_match(str1, str2, m=0):
         score = pairwise2.align.globalms(str1, str2, float(m/100), float((m/100)-1), float((m/100)-1), float((m/100)-1), score_only=True)
         if (type(score)!=float):
             return False
-        # print(score)
+        print(str1, str2, score)
         return (score>=0)
 
 # get consensus reference pattern from records of previous repeats
@@ -72,13 +72,18 @@ def cyclic_update(nl, s, ws, l):
             for j in range(patlen):
                 if li[1]-li[0]==nl[1]-nl[0] and min(li[2]-ws,nl[2]) - max(li[0]-ws,nl[0]) >= patlen:
                     # cyclic item already included
-                    if nl[0]<li[0]-ws:
+                    """if nl[0]<li[0]-ws:
                         # new item longer, update existing item
                         li[0] = nl[0]+ws
                         li[1] = nl[1]+ws
                     if nl[2]>li[2]-ws:
                         # new item longer, update existing item
+                        li[2] = nl[2]+ws"""
+                    if nl[2]-nl[0]>li[2]-li[0]:
+                        li[0] = nl[0]+ws
+                        li[1] = nl[1]+ws
                         li[2] = nl[2]+ws
+                    print(l)
                     return l
     # no cyclic item included
     for i in range(len(nl)):
