@@ -112,13 +112,13 @@ def search_short(s, ws, n, l, m=0, a='ATCG'):
                 if i+lenuu<=lens and str_match(s[i:i+lenuu], uu, m):
                     j = i+lenuu
                     k = j
-                    while k<lens+1 and str_match(s[j:k+1], uu[0:k-j+1], m):
+                    while k<lens and str_match(s[j:k+1], uu[0:k-j+1], m):
                         k += 1
                         if k-j>=lenuu:
                             j += lenuu
                     #print(s[i:k], i, k, ws)
                     nl = [i, i+len(u)-1, k-1]
-                    #print(s[nl[0]:nl[2]+1], nl[0], nl[2], ws)
+                    #print(s[nl[0]:nl[2]+1], nl[0], nl[1], nl[2], ws)
                     cyclic_update(nl, s, ws, l)
     return l
 
