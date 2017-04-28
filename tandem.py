@@ -45,7 +45,10 @@ def str_match(str1, str2, m=0):
         score = pairwise2.align.globalms(str1, str2, float(m/100), float((m/100)-1), float((m/100)-1), float((m/100)-1), score_only=True)
         if (type(score)!=float):
             return False
-        print(str1, str2, score)
+        """if (score>0):
+            a = pairwise2.align.globalms(str1, str2, float(m/100), float((m/100)-1), float((m/100)-1), float((m/100)-1))
+            print(format_alignment(*a[0]))
+            #print(str1, str2, score)"""
         return (score>=0)
 
 # get consensus reference pattern from records of previous repeats
