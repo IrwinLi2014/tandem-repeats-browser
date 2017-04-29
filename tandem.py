@@ -259,13 +259,17 @@ if __name__ == "__main__":
     parser.add_argument('-m', '--mismatch', help='Mismatch tolerance in percentage.', type=int, default=0)
     parser.add_argument('-w', '--window', help='Window size.', type=int, default=-1)
     parser.add_argument('-s', '--sequence', help='sequence to be searched', type=str)
-    parser.add_argument('-a', '--alpha', help='sequence to be searched', type=str)
+    parser.add_argument('-a', '--alphabet', help='sequence to be searched', type=str, default='ATCG')
+    parser.add_argument('-o', '--output', help='output file', type=str, default='out.csv')
     
     args = parser.parse_args()
 
     m=args.mismatch
     w=args.window
     s=args.sequence
+    alphabet=args.alphabet
+    outfile=args.output
+
     fasta_sequences = SeqIO.parse(open(s), 'fasta')
     output=[]
     bond = int(math.log(w,4))
@@ -274,10 +278,6 @@ if __name__ == "__main__":
     i = 0
     # total = 0
     for fasta in fasta_sequences:
-        # total += (len(fasta))
-        # if (total%5 == 0):
-        #     print(total)
-        #     total=0
         buffer = resi + str(fasta.seq).upper().strip('N')
         if (len(buffer)<w):
             continue
@@ -285,11 +285,10 @@ if __name__ == "__main__":
         j = 0
         while (int(w*(j+1)*3/4)<=len(buffer)):
             s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
-            output.append(search_long(int(i*3*w/4), bond+1, s, m, 'ATCG'))
-            search_short(s, int(i*3*w/4), bond+1, output[i], m, 'ATCG')
+            output.append(search_long(int(i*3*w/4), bond+1, s, m, alphabet))
+            search_short(s, int(i*3*w/4), bond+1, output[i], m, alphabet)
             print(i,"window finished")
             sys.stdout.flush()
-            # printrepeats (s,output)
             j+=1
             i+=1
         resi=buffer[int(j*w*3/4):]
@@ -301,7 +300,13 @@ if __name__ == "__main__":
     stitch(output, w, float(3/4))
     print("start finished")    
     sys.stdout.flush()
-    print(output)
     # print(len(output))
     # for l in output:
     #     print(len(l))
+    # Open a file
+    fo = open(outfile, "w")
+    for w in output:
+        for r in w:
+            fo.write(str(r[0])+","+str(r[1])+","+str(r[2])+"\n");
+    fo.close()
+
