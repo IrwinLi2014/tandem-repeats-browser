@@ -20,7 +20,7 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
 <TABLE Width ="100%" >
 <TR>
 <TD width = "100%" valign="top">
-<FORM ACTION="/cgi-bin/trf/trf.300.pl" ENCTYPE="multipart/form-data" METHOD="POST">
+<FORM ACTION="" ENCTYPE="multipart/form-data" METHOD="POST">
 <pre><b>usage:</b><br></pre>
 <li><pre2>File uploaded must be a DNA sequence in <b>FASTA</b> format.<BR>
 	example: <BR>
@@ -31,7 +31,7 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
 <li><pre2> Use "Alphabet" parameter to set the searched sequence's alphabet.<BR></pre2></li>
 <pre><b>parameters:</b><br></pre>
 <pre2>Maximum Mismatch Tolerance(%): </pre2>
-<select name=maxtolerance size=1>
+<select name=maxtolerance size=1 id="maxtolerance" 
 <option value=0>0
 <option value=15>15
 <option value=20>20
@@ -75,8 +75,8 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
        VALUE="Upload file in FASTA format" CHECKED>
   upload a local FASTA file:
        <BR> 
-<INPUT TYPE="file" NAME="input_file">
-<P>
+<INPUT TYPE="file" NAME="myfile" id="myfile">
+
 <LI><INPUT TYPE="radio" NAME="fileselect" 
         VALUE="Cut and paste sequence">
   text sequence<BR>
@@ -88,10 +88,10 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
 </FORM>
 </TD>
 
+
 <TD align="left" valign="top">
 &nbsp;
 <p><map name="FPMap0">
-
 
 <p>&nbsp;
 </TD>
@@ -100,3 +100,4 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
 <pre3>Authors: Chuchu Ding; Dejia Tang</br></pre3>
 <pre3>Last Revised: 4/30/2017</pre3>
 </HTML>
+
