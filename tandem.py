@@ -259,16 +259,16 @@ if __name__ == "__main__":
 
     if (s=='' and infile==''):
         parser.print_help()
-        sys.exit
+        sys.exit()
     
     output=[]
     bond = int(math.log(w,4))
 
-    fasta_sequences
+    fasta_sequences=None
     if (infile != ''):
         fasta_sequences = SeqIO.parse(open(infile), 'fasta')
     if (fasta_sequences==None):
-        fasta_sequences.append(s)
+        fasta_sequences=[s]
     
     resi=""
     # window index
@@ -280,6 +280,7 @@ if __name__ == "__main__":
         else:
             buffer = resi + str(fasta.seq).upper().strip('N')
         if (len(buffer)<w):
+            resi = buffer
             continue
         #  local index
         j = 0
@@ -295,12 +296,7 @@ if __name__ == "__main__":
     if(len(resi)>0):
         output.append(search_long(int(i*3*w/4), bond+1, resi, m, 'ATCG'))
         search_short(resi, int(i*3*w/4), bond+1, output[i], m, 'ATCG')
-    print("start stitch")    
-    sys.stdout.flush()
     stitch(output, w, float(3/4))
-    print("start finished")    
-    sys.stdout.flush()
-    
     printrepeats(s,output)
     fo = open(outfile, "w")
     for w in output:
