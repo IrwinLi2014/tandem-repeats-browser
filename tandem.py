@@ -13,7 +13,6 @@ Burrows M, Wheeler DJ: A Block Sorting Lossless Data Compression Algorithm.
 
 bw_transform() function implemented in https://gist.github.com/dmckean/9723bc06254809e9068f
 
-USAGE: tandem.py [-m MISMATCH] [-w WINDOW] SEQUENCE
 
 """
 import argparse
@@ -164,16 +163,10 @@ def search_long(start, n, s, m, a='ATCG'):
             if (abs(int(bw[j-1][l:]) - int(bw[j][l:])) != pattern) :
                 break
             # check complete match
-            # print("i", i)
-            # print("j", j)
-            # print("j", bw[j][:pattern])
             if (str_match(get_consensus(record, pattern), bw[j][:pattern], m)) :
                 # update record
-                # print(get_consensus(record, pattern))
                 for i_pattern in range (pattern):   
                     record[i_pattern][bw[j][i_pattern]] += 1
-                # print(get_consensus(record, pattern))
-                # print()
                 index2 = int(bw[j][l:])
                 j += 1
             else :
@@ -190,22 +183,16 @@ def search_long(start, n, s, m, a='ATCG'):
                 index1, index2 = index2, index1
             while (index1-pattern>=0 and str_match(get_consensus(record, pattern), s[index1-pattern:index1], m)):
                 # update record
-                # print(get_consensus(record, pattern))
                 index1 -= pattern
                 for i_pattern in range (pattern):   
                     record[i_pattern][s[index1+i_pattern]] += 1
-                # print(get_consensus(record, pattern))
-                # print()
             # extend backwards
             while (index2+2*pattern<=l and str_match(get_consensus(record, pattern), s[index2+pattern:index2+2*pattern], m)):
                 j+=1
                 index2 += pattern
                 # update record
-                # print(get_consensus(record, pattern))
                 for i_pattern in range (pattern):   
                     record[i_pattern][s[index2+i_pattern]] += 1
-                # print(get_consensus(record, pattern))
-                # print()
             end = min (index2+pattern-1, l-1)
             # check partial match in the end
             for k in range (pattern-1,0,-1):
@@ -216,8 +203,6 @@ def search_long(start, n, s, m, a='ATCG'):
                     break
             # update i
             i = j;
-            # print(start+index1, start+index1+pattern-1, start+end)
-            # print(get_consensus(record, pattern))
             # print()
             cyclic_update( [index1, index1+pattern-1, end], s, start, L )
     return L
@@ -258,8 +243,9 @@ if __name__ == "__main__":
 
     parser.add_argument('-m', '--mismatch', help='Mismatch tolerance in percentage.', type=int, default=0)
     parser.add_argument('-w', '--window', help='Window size.', type=int, default=-1)
-    parser.add_argument('-s', '--sequence', help='sequence to be searched', type=str)
+    parser.add_argument('-s', '--sequence', help='sequence to be searched', type=str, default='')
     parser.add_argument('-a', '--alphabet', help='sequence to be searched', type=str, default='ATCG')
+    parser.add_argument('-i', '--input', help='input file', type=str, default = '')
     parser.add_argument('-o', '--output', help='output file', type=str, default='out.csv')
     
     args = parser.parse_args()
@@ -268,17 +254,31 @@ if __name__ == "__main__":
     w=args.window
     s=args.sequence
     alphabet=args.alphabet
+    infile=args.input
     outfile=args.output
 
-    fasta_sequences = SeqIO.parse(open(s), 'fasta')
+    if (s=='' and infile==''):
+        parser.print_help()
+        sys.return
+    
     output=[]
     bond = int(math.log(w,4))
+
+    fasta_sequences
+    if (infile != ''):
+        fasta_sequences = SeqIO.parse(open(infile), 'fasta')
+    if (fasta_sequences==None):
+        fasta_sequences.append(s)
+    
     resi=""
     # window index
     i = 0
     # total = 0
     for fasta in fasta_sequences:
-        buffer = resi + str(fasta.seq).upper().strip('N')
+        if (infile==''):
+            buffer = fasta.upper()
+        else:
+            buffer = resi + str(fasta.seq).upper().strip('N')
         if (len(buffer)<w):
             continue
         #  local index
@@ -300,10 +300,8 @@ if __name__ == "__main__":
     stitch(output, w, float(3/4))
     print("start finished")    
     sys.stdout.flush()
-    # print(len(output))
-    # for l in output:
-    #     print(len(l))
-    # Open a file
+    
+    printrepeats(s,output)
     fo = open(outfile, "w")
     for w in output:
         for r in w:
