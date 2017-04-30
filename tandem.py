@@ -259,7 +259,7 @@ if __name__ == "__main__":
 
     if (s=='' and infile==''):
         parser.print_help()
-        sys.return
+        sys.exit
     
     output=[]
     bond = int(math.log(w,4))
