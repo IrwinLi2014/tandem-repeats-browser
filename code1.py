@@ -14,7 +14,7 @@ gm = 0
 gw = 0
 ga = 0
 gb = 0
-repeatfound=""
+repeatfound=None
 
 class index:
     def GET(self):
@@ -90,7 +90,7 @@ class repeat:
     def GET(self):
         self.page_body = []
         print("repeat: ", repeatfound)
-        if (repeatfound != ""):
+        if (repeatfound):
             self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
         self.page_body.append("""<ul><li><a href='"+str(n)+"'>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ] </a></li></ul>""")
         with open('out.csv', 'rb') as csvfile:
