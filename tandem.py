@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 """
-
 Seach for tandem repeats with mismatch and partial repeats tolerance.
 
 Authors: Chuchu Ding; Dejia Tang
@@ -12,17 +11,15 @@ Burrows M, Wheeler DJ: A Block Sorting Lossless Data Compression Algorithm.
     Technical Report 124. Palo Alto, CA: Digital Equipment Corporation; 1994.
 
 bw_transform() function implemented in https://gist.github.com/dmckean/9723bc06254809e9068f
-
-
 """
 import argparse
 import math
+import sys
 from math import ceil
 from itertools import permutations
 from Bio import pairwise2
 from Bio.pairwise2 import format_alignment
 from Bio import SeqIO
-import sys
 
 def bw_transform(s, n):
     # this line referenced the code in https://gist.github.com/dmckean/9723bc06254809e9068f
@@ -33,13 +30,6 @@ def bw_transform(s, n):
 # Input:  m - number of mismatches allowed (int)
 # Output:  strings match or not (boolean)
 def str_match(str1, str2, m=0):
-    """err = 0
-    for i in range(len(str1)):
-        if str1[i] != str2[i]:
-            err += 1
-            if err > m:
-                return False
-    return True"""
     if m==0:
         return str1==str2
     else:
@@ -72,13 +62,6 @@ def cyclic_update(nl, s, ws, l):
             for j in range(patlen):
                 if li[1]-li[0]==nl[1]-nl[0] and min(li[2]-ws,nl[2]) - max(li[0]-ws,nl[0]) >= patlen:
                     # cyclic item already included
-                    """if nl[0]<li[0]-ws:
-                        # new item longer, update existing item
-                        li[0] = nl[0]+ws
-                        li[1] = nl[1]+ws
-                    if nl[2]>li[2]-ws:
-                        # new item longer, update existing item
-                        li[2] = nl[2]+ws"""
                     if nl[2]-nl[0]>li[2]-li[0]:
                         li[0] = nl[0]+ws
                         li[1] = nl[1]+ws
@@ -98,12 +81,13 @@ def cyclic_update(nl, s, ws, l):
 # Input: s - the sequence to be searched (String)
 # Input: ws - the start index of the current window (int)
 # Input: n - upper boundary of length of repeats to be found
+# Input: lb - lower boundary of length of repeats to be found
 # Input: m - mismatch tolerance (int)
 # Input: a - alphabet of possible letters in sequence (String)
 # Output: l - list of int tuples representing all found repeats  ([(int, int, int)])
-def search_short(s, ws, n, l, m=0, a='ATCG'):
+def search_short(l, s, ws, n, lb, m=0, a='ATCG'):
     lens = len(s)
-    for lamb in range(n):
+    for lamb in range(lb, n):
         combi = [''.join(cb) for cb in permutations(a, lamb)]
         for u in combi:
             if u=='':
@@ -118,9 +102,7 @@ def search_short(s, ws, n, l, m=0, a='ATCG'):
                         k += 1
                         if k-j>=lenuu:
                             j += lenuu
-                    #print(s[i:k], i, k, ws)
                     nl = [i, i+len(u)-1, k-1]
-                    #print(s[nl[0]:nl[2]+1], nl[0], nl[1], nl[2], ws)
                     cyclic_update(nl, s, ws, l)
     return l
 
@@ -247,6 +229,7 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--alphabet', help='sequence to be searched', type=str, default='ATCG')
     parser.add_argument('-i', '--input', help='input file', type=str, default = '')
     parser.add_argument('-o', '--output', help='output file', type=str, default='out.csv')
+    parser.add_argument('-b', '--bond', help='lower boundary', type=int, default='0')
     
     args = parser.parse_args()
 
@@ -256,6 +239,7 @@ if __name__ == "__main__":
     alphabet=args.alphabet
     infile=args.input
     outfile=args.output
+    lower_bond=args.bond
 
     if (s=='' and infile==''):
         parser.print_help()
@@ -286,21 +270,28 @@ if __name__ == "__main__":
         j = 0
         while (int(w*(j+1)*3/4)<=len(buffer)):
             s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
-            output.append(search_long(int(i*3*w/4), bond+1, s, m, alphabet))
-            search_short(s, int(i*3*w/4), bond+1, output[i], m, alphabet)
-            print(i,"window finished")
+            if (lower_bond>bond+1):
+                output.append(search_long(int(i*3*w/4), lower_bond, s, m, alphabet))
+            else:
+                output.append(search_long(int(i*3*w/4), bond+1, s, m, alphabet))
+            search_short(output[i], s, int(i*3*w/4), bond+1, lower_bond, m, alphabet)
+            print(i+1,"window finished")
             sys.stdout.flush()
+
             j+=1
             i+=1
         resi=buffer[int(j*w*3/4):]
     if(len(resi)>0):
-        output.append(search_long(int(i*3*w/4), bond+1, resi, m, 'ATCG'))
-        search_short(resi, int(i*3*w/4), bond+1, output[i], m, 'ATCG')
+        if (lower_bond>bond+1):
+            output.append(search_long(int(i*3*w/4), lower_bond, resi, m, 'ATCG'))
+        else:
+            output.append(search_long(int(i*3*w/4), bond+1, resi, m, 'ATCG'))
+        search_short(output[i], resi, int(i*3*w/4), bond+1, lower_bond, m, 'ATCG')
     stitch(output, w, float(3/4))
-    printrepeats(s,output)
     fo = open(outfile, "w")
     for w in output:
         for r in w:
             fo.write(str(r[0])+","+str(r[1])+","+str(r[2])+"\n");
     fo.close()
+
 
