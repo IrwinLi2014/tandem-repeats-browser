@@ -81,12 +81,12 @@ if __name__ == "__main__":
                 buffer = fasta.upper()
             else:
                 buffer = resi + str(fasta.seq).upper().strip('N')
-            if (i += len(buffer)<start):
+            if (i + len(buffer)<start):
                 i += len(buffer)
                 continue
             else:
                 opt += buffer[start-i:]
-                if len(opt)>s_len:
+                if len(opt)>str_len:
                     print("No. " + str(rn) + " of the repeats found: " + opt[:str_len])
                     exit()
                 else:
