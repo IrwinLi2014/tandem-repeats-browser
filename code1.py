@@ -48,7 +48,7 @@ class index:
         #web.debug(x['myfile'].value) # This is the file contents
         #web.debug(x['myfile'].file.read()) # Or use a file(-like) object
 
-	raise web.seeother('/repeat')
+	   raise web.seeother('/repeat')
 
 class repeat:
     def GET(self):
@@ -72,7 +72,7 @@ class repeat:
         #web.debug(x['myfile'].value) # This is the file contents
         #web.debug(x['myfile'].file.read()) # Or use a file(-like) object
 
-    raise web.seeother('/repeat')
+        raise web.seeother('/repeat')
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
