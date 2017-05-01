@@ -110,8 +110,8 @@ class repeat:
         if (gfastayes==True) and (repeatfound):
             self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
         if (gfastayes==False):
-            self.page_body.append("""<ul><li><a href='/repeat'>You selected cut and paste sequence.  Found tandem repeats are displayed below, each repeat followed by its indices:</li></ul>""")
-        self.page_body.append("""<ul><li><a href='/repeat'><b>[ index , start point of repeat, end point of the 1st pattern , end point of repeat  ]</b> </li></ul>""")
+            self.page_body.append("""<ul><li><a href='/repeat'>You selected cut and paste sequence.  Found tandem repeats are displayed below, each repeat followed by its indices:</a></li></ul>""")
+        self.page_body.append("""<ul><li><a href='/repeat'><b>[ index , start point of repeat, end point of the 1st pattern , end point of repeat  ]</b> </a></li></ul>""")
         rs = []
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
@@ -131,7 +131,7 @@ class repeat:
                 repeats = csv.reader(myrptscsv)
                 for row in repeats:
                     for i in range(len(row)):
-                        self.page_body.append("""<ul><li><a href='/repeat'>""" + row[i] + """</li></ul>""")
+                        self.page_body.append("""<ul><li><a href='/repeat'>""" + row[i] + """</a></li></ul>""")
                         self.page_body.append(rs[x])
                         x+=1
         return (self.page_head + " ".join(self.page_body) + self.page_tail)

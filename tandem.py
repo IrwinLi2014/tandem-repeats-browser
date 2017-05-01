@@ -269,7 +269,10 @@ if __name__ == "__main__":
         #  local index
         j = 0
         while (int(w*(j+1)*3/4)<=len(buffer)):
+            print("j", j)
+            print(int(w*j*3/4), int(w*j*3/4))
             s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
+            print("s",s)
             if (lower_bond>bond+1):
                 output.append(search_long(int(i*3*w/4), lower_bond, s, m, alphabet))
             else:
@@ -280,13 +283,16 @@ if __name__ == "__main__":
 
             j+=1
             i+=1
-        resi=buffer[int(j*w*3/4):]
+        resi=buffer[int(j*w*3/4)+w:]
     if(len(resi)>0):
         if (lower_bond>bond+1):
             output.append(search_long(int(i*3*w/4), lower_bond, resi, m, alphabet))
         else:
             output.append(search_long(int(i*3*w/4), bond+1, resi, m, alphabet))
         search_short(output[i], resi, int(i*3*w/4), bond+1, lower_bond, m, alphabet)
+    print(output)
+    stitch(output, w, float(3/4))
+    print(output)
     stitch(output, w, float(3/4))
     fo = open(outfile, "w")
     for w in output:
