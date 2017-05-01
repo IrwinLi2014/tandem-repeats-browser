@@ -124,6 +124,6 @@ if __name__ == "__main__":
     #if(len(resi)>0):
         #print(resi)
 
-    print("No. " + rn + " of the repeats found: " + opt)
+    print("No. " + str(rn) + " of the repeats found: " + str(opt))
 
 
