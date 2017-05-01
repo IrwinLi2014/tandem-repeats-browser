@@ -111,7 +111,7 @@ class repeat:
             self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
         self.page_body.append("""<ul><li><a href='/repeat'><b>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ]</b> </li></ul>""")
         if gfastayes == False:
-            command = "python3 ./showrepeats_2.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -s " + myseq
+            command = "python3 ./showrepeats_2.py -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -s " + myseq
             subprocess.call(command, shell=True)
             with open('myrpts.csv', 'rb') as myrptscsv:
                 repeats = csv.reader(myrptscsv)
