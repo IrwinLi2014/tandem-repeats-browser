@@ -116,7 +116,7 @@ class repeat:
             with open('myrpts.csv', 'rb') as myrptscsv:
                 repeats = csv.reader(myrptscsv)
                 for row in repeats:
-                    self.page_body.append("""<ul><li><a href='/repeat'><b>""" + myseq + " , " + row[0] + " , " +row[1] + " , " + row[2] + """</b> </li></ul>""")
+                    self.page_body.append("""<ul><li><a href='/repeat'><b>""" + myseq + " , " + row[0] + """</b> </li></ul>""")
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
             n = 0
