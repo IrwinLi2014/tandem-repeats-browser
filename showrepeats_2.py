@@ -41,12 +41,14 @@ if __name__ == "__main__":
     #cut paste sequence
     if s!="":
         fo = open("myrpts.csv", "w")
-        for row in rpts:
-            for rpt in row:
-                lwr = int(rpt[0])
-                upr = int(rpt[2])
-                myrpt = s[lwr:upr+1]
-                fo.write(myrpt+"\n")
+        for rpt in rpts:
+            print("here")
+            print(rpts)
+            print(rpt)
+            lwr = int(rpt[0])
+            upr = int(rpt[2])
+            myrpt = s[lwr:upr+1]
+            fo.write(myrpt+"\n")
         fo.close()
     #input fasta file
     else:
