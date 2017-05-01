@@ -26,8 +26,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     rpts = numpy.loadtxt(open("out.csv", "rb"), delimiter=",")
-    rpts = numpy.ndarray.tolist(rpts)
     print(rpts.shape)
+    rpts = numpy.ndarray.tolist(rpts)
+    
 
     m=args.mismatch
     w=args.window
