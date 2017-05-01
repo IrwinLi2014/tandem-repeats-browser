@@ -121,14 +121,13 @@ class repeat:
                 for row in repeats:
                     for i in range(len(row)):
                         self.page_body.append("""<ul><li><a href='/repeat'><b>""" + row[i] + """</b> </li></ul>""")
-        else:
-            with open('out.csv', 'rb') as csvfile:
-                repeats = csv.reader(csvfile, delimiter=',')
-                n = 0
-                for row in repeats:
-                    r = "<ul><li><a href='/repeat?id=" + str(n)+ "''>[ " + str(n) + " , " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
-                    self.page_body.append(r)
-                    n+=1
+        with open('out.csv', 'rb') as csvfile:
+            repeats = csv.reader(csvfile, delimiter=',')
+            n = 0
+            for row in repeats:
+                r = "<ul><li><a href='/repeat?id=" + str(n)+ "''>[ " + str(n) + " , " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
+                self.page_body.append(r)
+                n+=1
         return (self.page_head + " ".join(self.page_body) + self.page_tail)
 
     def POST(self):
