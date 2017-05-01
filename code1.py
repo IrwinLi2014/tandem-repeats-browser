@@ -67,9 +67,9 @@ class repeat:
                 rn = '0'
             command = "python3 ./showrepeats.py -rn " + rn + " -m " + gm + " -w " + gw + " -a " + ga + " -b " + gb + " -i input.fna > repeat_found"
             subprocess.call(command, shell=True)
-            repeat = numpy.loadtxt(open("repeat_found", 'rb'))
+            with open("repeat_found", 'rb') as f:
+                repeat = f.read()
             print(repeat)
-            
 
         raise web.seeother('/repeat')
 
