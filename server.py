@@ -109,7 +109,10 @@ class repeat:
                 repeatfound = f.read()
         if (gfastayes==True) and (repeatfound):
             self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
-        self.page_body.append("""<ul><li><a href='/repeat'><b>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ]</b> </li></ul>""")
+        if (gfastayes==True):
+            self.page_body.append("""<ul><li><a href='/repeat'><b>[ index , start point of repeat, end point of the 1st pattern , end point of repeat  ]</b> </li></ul>""")
+        else:
+            self.page_body.append("""<ul><li><a href='/repeat'><b>You selected cut and paste sequence.  Found tandem repeats are displayed below:</b> </li></ul>""")
         if gfastayes == False:
             command = "python3 ./showrepeats_2.py -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -s " + myseq
             subprocess.call(command, shell=True)
