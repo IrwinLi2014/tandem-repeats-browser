@@ -103,7 +103,7 @@ class repeat:
         print("repeat: ", repeatfound)
         data = web.input(id=-1)
         if (data.id!=-1):
-            command = "python3 ./showrepeats.py -rn " + data.id + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
+            command = "python3 ./showrepeats_2.py -rn " + data.id + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
             subprocess.call(command, shell=True)
             with open("repeat_found", 'rb') as f:
                 repeatfound = f.read()
@@ -132,9 +132,9 @@ class repeat:
             if rn == "":
                 rn = '0'
             if gfastayes:
-                command = "python3 ./showrepeats.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
+                command = "python3 ./showrepeats_2.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
             else:
-                command = "python3 ./showrepeats.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -s " + myseq
+                command = "python3 ./showrepeats_2.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -s " + myseq
             subprocess.call(command, shell=True)
             with open("repeat_found", 'rb') as f:
                 repeatfound = f.read()
