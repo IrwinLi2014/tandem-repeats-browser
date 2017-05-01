@@ -25,14 +25,14 @@ class index:
 
     def POST(self):
         x = web.input(myfile={}, alpha='ATCG', cutpasteyes='')
-        command = "python3 ./tandem.py -m %s -w %s -a %s -i input.fna", (x.maxtolerance.encode('ascii','ignore'), x.windowsize.encode('ascii','ignore'), x.alpha.encode('ascii','ignore'))
-	print(command)
+        command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + x.alpha.encode('ascii','ignore') + " -i input.fna"
+	    print(command)
         if x.fileyes and x.myfile.file:
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
             destFile.close()
         if x.cutpasteyes!='':
-            command = "python3 ./tandem.py -m %s -w %s -a %s -s %s", (x.maxtolerance.encode('ascii','ignore'), x.windowsize.encode('ascii','ignore'), x.alpha.encode('ascii','ignore'), x.seq.encode('ascii','ignore'))
+            command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + x.alpha.encode('ascii','ignore') + " -s " + x.seq.encode('ascii','ignore')
         subprocess.call(command, shell=True)
         #web.debug(x['myfile'].value) # This is the file contents
         #web.debug(x['myfile'].file.read()) # Or use a file(-like) object
