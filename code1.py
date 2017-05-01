@@ -75,7 +75,7 @@ class repeat:
             </head>
             <body>"""]
     def GET(self):
-        page.append( """
+        self.page.append( """
 <form method="POST" enctype="multipart/form-data" action="">
 <textarea name="rn" rows=1 cols=10 id="rn"></textarea>
 <input type="submit" />
