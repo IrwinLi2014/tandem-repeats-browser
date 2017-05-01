@@ -67,7 +67,7 @@ class repeat:
             rn = x.rn.encode('ascii','ignore')
             if rn == "":
                 rn = '0'
-            command = "python3 ./showrepeats.py -rn " + rn + " -m " + gm + " -w " + gw + " -a " + ga + " -b " + gb + + " -i input.fna"
+            command = "python3 ./showrepeats.py -rn " + rn + " -m " + gm + " -w " + gw + " -a " + ga + " -b " + gb + " -i input.fna"
             subprocess.call(command, shell=True) 
         #web.debug(x['myfile'].value) # This is the file contents
         #web.debug(x['myfile'].file.read()) # Or use a file(-like) object
