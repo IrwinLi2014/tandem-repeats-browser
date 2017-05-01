@@ -57,7 +57,10 @@ if __name__ == "__main__":
     print(len(rpts))
 
     lli = rpts[rn]
-    [int(a) for a in lli]
+    lli[0] = int(lli[0])
+    lli[1] = int(lli[1])
+    lli[2] = int(lli[2])
+    #[int(a) for a in lli]
 
     if (s=='' and infile==''):
         parser.print_help()
@@ -94,8 +97,8 @@ if __name__ == "__main__":
             s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
 
             if lli[0]>=0 and lli[0]<w:
-                lwr = lli[0]
-                upr = lli[2]
+                lwr = int(lli[0])
+                upr = int(lli[2])
                 if upr < w:
                     opt = opt + s[lwr:upr+1]
                     done = True
