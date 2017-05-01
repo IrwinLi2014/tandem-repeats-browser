@@ -110,6 +110,10 @@ class repeat:
         if (repeatfound):
             self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
         self.page_body.append("""<ul><li><a href='/repeat'><b>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ]</b> </li></ul>""")
+        with open('myrpts.csv', 'rb') as myrptscsv:
+            repeats = csv.reader(myrptscsv)
+            for row in repeats:
+                self.page_body.append("""<ul><li><a href='/repeat'><b>""" + row + """</b> </li></ul>""")
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
             n = 0
