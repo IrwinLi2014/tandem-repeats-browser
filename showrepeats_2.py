@@ -41,6 +41,8 @@ if __name__ == "__main__":
     #cut paste sequence
     if s!="":
         fo = open("myrpts.csv", "w")
+        print(rpts)
+        print(len(rpts))
         for rpt in rpts:
             lwr = int(rpt[0])
             upr = int(rpt[2])
