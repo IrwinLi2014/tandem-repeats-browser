@@ -57,7 +57,7 @@ class repeat:
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
-                background-color: #333333;
+                background-color: #Grey;
             }
 
             li a {
@@ -69,7 +69,7 @@ class repeat:
             }
 
             li a:hover {
-                background-color: #111111;
+                background-color: #FFFFCC;
             }
             </style>
             </head>
@@ -77,7 +77,8 @@ class repeat:
     page_body = []
     page_tail = "</body></html>"
     def GET(self):
-        self.page_body = []
+        self.page_body = ["<form method="POST" enctype="multipart/form-data" action=""><textarea name="rn" rows=1 cols=10 id="rn"></textarea><br>"]
+        
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
             n = 0
