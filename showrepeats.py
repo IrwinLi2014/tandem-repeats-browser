@@ -53,7 +53,7 @@ if __name__ == "__main__":
     #winlowerind = int(w*wn*rate)
     #winupperind = winlowerind + w
 
-    print(rpts[0])
+    print(rpts)
     print(len(rpts))
 
     lli = rpts[rn]
