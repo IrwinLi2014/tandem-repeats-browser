@@ -1,6 +1,7 @@
 import web
 import shutil
 import subprocess
+import numpy
 render = web.template.render('webpage/')
 
 urls = (
@@ -45,9 +46,6 @@ class index:
             command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + alph + " -s " + x.seq.encode('ascii','ignore') + " -b " + bond
         print('command', command)
         subprocess.call(command, shell=True)
-        #web.debug(x['myfile'].value) # This is the file contents
-        #web.debug(x['myfile'].file.read()) # Or use a file(-like) object
-
         raise web.seeother('/repeat')
 
 class repeat:
@@ -67,10 +65,11 @@ class repeat:
             rn = x.rn.encode('ascii','ignore')
             if rn == "":
                 rn = '0'
-            command = "python3 ./showrepeats.py -rn " + rn + " -m " + gm + " -w " + gw + " -a " + ga + " -b " + gb + " -i input.fna"
-            subprocess.call(command, shell=True) 
-        #web.debug(x['myfile'].value) # This is the file contents
-        #web.debug(x['myfile'].file.read()) # Or use a file(-like) object
+            command = "python3 ./showrepeats.py -rn " + rn + " -m " + gm + " -w " + gw + " -a " + ga + " -b " + gb + " -i input.fna > repeat_found"
+            subprocess.call(command, shell=True)
+            repeat = numpy.loadtxt(open("repeat_found", 'rb'))
+            print(repeat)
+            
 
         raise web.seeother('/repeat')
 
