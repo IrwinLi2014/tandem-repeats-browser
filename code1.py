@@ -49,15 +49,39 @@ class index:
         raise web.seeother('/repeat')
 
 class repeat:
+    page=["""<html>
+            <head>
+            <style>
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333333;
+            }
+
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 16px;
+                text-decoration: none;
+            }
+
+            li a:hover {
+                background-color: #111111;
+            }
+            </style>
+            </head>
+            <body>"""]
     def GET(self):
-        return """<html><head></head><body>
+        page.append( """
 <form method="POST" enctype="multipart/form-data" action="">
 <textarea name="rn" rows=1 cols=10 id="rn"></textarea>
-<input type="file" id="myfile "name="myfile" />
-<br/>
 <input type="submit" />
 </form>
-</body></html>"""
+</body></html>""")
+        return (" ".join(page))
 
     def POST(self):
         if gfastayes:
