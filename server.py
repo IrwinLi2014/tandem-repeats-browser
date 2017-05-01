@@ -41,6 +41,7 @@ class index:
         global gfastayes
         global myseq
         if x['fileselect']=="Upload file in FASTA format" and x.myfile.file:
+            gfastayes = True
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
             destFile.close()
