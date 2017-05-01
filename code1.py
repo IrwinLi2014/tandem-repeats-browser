@@ -57,12 +57,12 @@ class repeat:
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
-                background-color: #Grey;
+                background-color: Grey;
             }
 
             li a {
                 display: block;
-                color: white;
+                color: orage;
                 text-align: center;
                 padding: 16px;
                 text-decoration: none;
@@ -77,8 +77,8 @@ class repeat:
     page_body = []
     page_tail = "</body></html>"
     def GET(self):
-        self.page_body = ["<form method="POST" enctype="multipart/form-data" action=""><textarea name="rn" rows=1 cols=10 id="rn"></textarea><br>"]
-        
+        self.page_body = ["""<form method="POST" enctype="multipart/form-data" action=""><textarea name="rn" rows=1 cols=10 id="rn"></textarea><br><input type="submit" /></form>"""]
+
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
             n = 0
