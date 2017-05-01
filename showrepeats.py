@@ -57,6 +57,7 @@ if __name__ == "__main__":
     print(len(rpts))
 
     lli = rpts[rn]
+    [int(a) for a in lli]
 
     if (s=='' and infile==''):
         parser.print_help()
