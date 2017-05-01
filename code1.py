@@ -82,17 +82,21 @@ class repeat:
             <pre><b>search repeat (using index):</b></pre>
             <form method="POST" enctype="multipart/form-data" action=""><textarea name="rn" rows=1 cols=10 id="rn"></textarea><input type="submit" /></form>
             <pre><b>search result:</b></pre>
-            <ul><li><a href='"+str(n)+"'>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ] </a></li></ul>
+            
             """
     page_body = []
+    repeat = ""
     page_tail = "</body></html>"
     def GET(self):
         self.page_body = []
+        if (self.repeat != ""):
+            self.page_body.append("""<pre><b>""" + self.repeat  """</b></pre>""")
+        self.page_body.append("""<ul><li><a href='"+str(n)+"'>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ] </a></li></ul>""")
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
             n = 0
             for row in repeats:
-                r = "<ul><li><a href='"+str(n)+"'>[  #" + str(n) + " , " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
+                r = "<ul><li>[  #" + str(n) + " , " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
                 self.page_body.append(r)
                 n+=1
         return (self.page_head + " ".join(self.page_body) + self.page_tail)
@@ -106,8 +110,8 @@ class repeat:
             command = "python3 ./showrepeats.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
             subprocess.call(command, shell=True)
             with open("repeat_found", 'rb') as f:
-                repeat = f.read()
-            print(repeat)
+                self.repeat = f.read()
+            print(self.repeat)
         
         raise web.seeother('/repeat')
 
