@@ -1,7 +1,7 @@
 import web
 import shutil
 import subprocess
-import numpy
+import csv
 render = web.template.render('webpage/')
 
 urls = (
@@ -49,7 +49,7 @@ class index:
         raise web.seeother('/repeat')
 
 class repeat:
-    page=["""<html>
+    page_head="""<html>
             <head>
             <style>
             ul {
@@ -73,15 +73,19 @@ class repeat:
             }
             </style>
             </head>
-            <body>"""]
+            <body>"""
+    page_body = []
+    page_tail = "</body></html>"
     def GET(self):
-        self.page.append( """
-<form method="POST" enctype="multipart/form-data" action="">
-<textarea name="rn" rows=1 cols=10 id="rn"></textarea>
-<input type="submit" />
-</form>
-</body></html>""")
-        return (" ".join(page))
+        this.page_body = []
+        with open('out.csv', 'rb') as csvfile:
+            repeats = csv.reader(csvfile, delimiter=',')
+            n = 0
+            for row in repeats:
+                r = "<ul><li><a href='"+str(n)+"'>Home</a></li></ul>"
+                this.page_body.append()
+                n++
+        return (self.page_head + " ".join(self.page_body) + self.page_tail)
 
     def POST(self):
         if gfastayes:
