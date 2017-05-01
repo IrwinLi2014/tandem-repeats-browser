@@ -71,19 +71,27 @@ class repeat:
             li a:hover {
                 background-color: #FFFFCC;
             }
+            pre {
+                color:DarkBlue;
+                font-size:120%;
+                font-family:courier;
+            }
             </style>
             </head>
-            <body>"""
+            <body>
+            <pre><b>search repeat (using index):</b><br></pre>
+            <form method="POST" enctype="multipart/form-data" action=""><textarea name="rn" rows=1 cols=10 id="rn"></textarea><br><input type="submit" /></form>
+            """
     page_body = []
     page_tail = "</body></html>"
     def GET(self):
-        self.page_body = ["""<form method="POST" enctype="multipart/form-data" action=""><textarea name="rn" rows=1 cols=10 id="rn"></textarea><br><input type="submit" /></form>"""]
-
+        self.page_body = []
+        self.page_body.append("<ul><li><a href='"+str(n)+"'>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ] </a></li></ul>")
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
             n = 0
             for row in repeats:
-                r = "<ul><li><a href='"+str(n)+"'>[ " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
+                r = "<ul><li><a href='"+str(n)+"'>[  #" + n + " , " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
                 self.page_body.append(r)
                 n+=1
         return (self.page_head + " ".join(self.page_body) + self.page_tail)
