@@ -57,12 +57,12 @@ class repeat:
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
-                background-color: Grey;
+                background-color: #E0E0E0;
             }
 
             li a {
                 display: block;
-                color: orage;
+                color: #3D3D3D;
                 text-align: center;
                 padding: 16px;
                 text-decoration: none;
