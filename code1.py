@@ -77,14 +77,14 @@ class repeat:
     page_body = []
     page_tail = "</body></html>"
     def GET(self):
-        this.page_body = []
+        self.page_body = []
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
             n = 0
             for row in repeats:
-                r = "<ul><li><a href='"+str(n)+"'>Home</a></li></ul>"
-                this.page_body.append()
-                n++
+                r = "<ul><li><a href='"+str(n)+"'>[ " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
+                self.page_body.append(r)
+                n+=1
         return (self.page_head + " ".join(self.page_body) + self.page_tail)
 
     def POST(self):
