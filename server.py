@@ -107,7 +107,7 @@ class repeat:
             subprocess.call(command, shell=True)
             with open("repeat_found", 'rb') as f:
                 repeatfound = f.read()
-        if (repeatfound):
+        if (gfastayes==True) and (repeatfound):
             self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
         self.page_body.append("""<ul><li><a href='/repeat'><b>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ]</b> </li></ul>""")
         if gfastayes == False:
@@ -118,13 +118,14 @@ class repeat:
                 for row in repeats:
                     for i in range(len(row)):
                         self.page_body.append("""<ul><li><a href='/repeat'><b>""" + row[i] + """</b> </li></ul>""")
-        with open('out.csv', 'rb') as csvfile:
-            repeats = csv.reader(csvfile, delimiter=',')
-            n = 0
-            for row in repeats:
-                r = "<ul><li><a href='/repeat?id=" + str(n)+ "''>[ " + str(n) + " , " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
-                self.page_body.append(r)
-                n+=1
+        else:
+            with open('out.csv', 'rb') as csvfile:
+                repeats = csv.reader(csvfile, delimiter=',')
+                n = 0
+                for row in repeats:
+                    r = "<ul><li><a href='/repeat?id=" + str(n)+ "''>[ " + str(n) + " , " + row[0] + " , " +row[1] + " , " + row[2] + " ] </a></li></ul>"
+                    self.page_body.append(r)
+                    n+=1
         return (self.page_head + " ".join(self.page_body) + self.page_tail)
 
     def POST(self):
