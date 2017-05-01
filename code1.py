@@ -14,6 +14,7 @@ gm = 0
 gw = 0
 ga = 0
 gb = 0
+repeatfound=""
 
 class index:
     def GET(self):
@@ -85,12 +86,12 @@ class repeat:
             
             """
     page_body = []
-    repeat=""
     page_tail = "</body></html>"
     def GET(self):
         self.page_body = []
-        if (self.repeat != ""):
-            self.page_body.append("""<pre><b>""" + self.repeat +  """</b></pre>""")
+        print("repeat: ", repeatfound)
+        if (repeatfound != ""):
+            self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
         self.page_body.append("""<ul><li><a href='"+str(n)+"'>[ index , start point of repeat, end point of the 1st pattern , end point of repeat " ] </a></li></ul>""")
         with open('out.csv', 'rb') as csvfile:
             repeats = csv.reader(csvfile, delimiter=',')
@@ -110,8 +111,8 @@ class repeat:
             command = "python3 ./showrepeats.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
             subprocess.call(command, shell=True)
             with open("repeat_found", 'rb') as f:
-                self.repeat = f.read()
-            print(self.repeat)
+                repeatfound = f.read()
+            print(repeatfound)
         
         raise web.seeother('/repeat')
 
