@@ -46,6 +46,7 @@ if __name__ == "__main__":
             upr = int(rpt[2])
             myrpt = s[lwr:upr+1]
             fo.write(myrpt+"\n")
+            print(myrpt)
         fo.close()
     #input fasta file
     else:
