@@ -25,15 +25,12 @@ class index:
 
     def POST(self):
         x = web.input(myfile={}, alpha='ATCG')
-
-        print(x['fileselect'])
         command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + x.alpha.encode('ascii','ignore') + " -i input.fna"
-        print(command)
-        if x.fileselect.fileyes and x.myfile.file:
+        if x.['fileselect']=="Upload file in FASTA format" and x.myfile.file:
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
             destFile.close()
-        if x.fileselect.cutpasteyes!='':
+        if x['fileselect']=="Cut and paste sequence":
             command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + x.alpha.encode('ascii','ignore') + " -s " + x.seq.encode('ascii','ignore')
         subprocess.call(command, shell=True)
         #web.debug(x['myfile'].value) # This is the file contents
