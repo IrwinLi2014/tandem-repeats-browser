@@ -31,7 +31,7 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
 <li><pre2> Use "Alphabet" parameter to set the searched sequence's alphabet.<BR></pre2></li>
 <pre><b>parameters:</b><br></pre>
 <pre2>Maximum Mismatch Tolerance(%): </pre2>
-<select name=maxtolerance size=1 id="maxtolerance" 
+<select name=maxtolerance size=1 id="maxtolerance"> 
 <option value=0>0
 <option value=15>15
 <option value=20>20
@@ -53,7 +53,7 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
 </select>
 
 <pre2><br><br>Window Size: </pre2>
-<select name=window size=1>
+<select name=window size=1 id="windowsize">
 <option value=10>10
 <option value=100>100
 <option value=1000>1000
@@ -67,20 +67,20 @@ select{color:DarkBlue; font-size: 120%;  font-family:courier;}
 </select>
 
 <pre2><br><br>Alphabet: </pre2>
-<textarea name=alphabet rows=1 cols=45></textarea>
+<textarea name=alphabet rows=1 cols=45 id="alpha"></textarea>
 
 <pre><b>choose one of the following ways to submit data:</b><br></pre>
 <OL>
 <LI><INPUT TYPE="radio" NAME="fileselect" 
-       VALUE="Upload file in FASTA format" CHECKED>
+       VALUE="Upload file in FASTA format" id="fileyes" CHECKED>
   upload a local FASTA file:
        <BR> 
 <INPUT TYPE="file" NAME="myfile" id="myfile">
 
 <LI><INPUT TYPE="radio" NAME="fileselect" 
-        VALUE="Cut and paste sequence">
+        VALUE="Cut and paste sequence" id="cutpasteyes">
   text sequence<BR>
-<textarea name="SEQUENCE" rows=10 cols=50></textarea>
+<textarea name="SEQUENCE" rows=10 cols=50 id="seq"></textarea>
 </OL>
 <INPUT TYPE="submit" VALUE="Submit">
 <INPUT TYPE="reset" VALUE="Clear">
