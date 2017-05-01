@@ -288,7 +288,6 @@ if __name__ == "__main__":
             output.append(search_long(int(i*3*w/4), bond+1, resi, m, alphabet))
         search_short(output[i], resi, int(i*3*w/4), bond+1, lower_bond, m, alphabet)
     stitch(output, w, float(3/4))
-    print(output)
     fo = open(outfile, "w")
     for w in output:
         for r in w:
