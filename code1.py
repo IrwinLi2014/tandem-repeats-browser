@@ -89,6 +89,7 @@ class repeat:
     page_tail = "</body></html>"
     def GET(self):
         self.page_body = []
+        global repeatfound
         print("repeat: ", repeatfound)
         if (repeatfound):
             self.page_body.append("""<pre><b>""" + repeatfound +  """</b></pre>""")
@@ -103,6 +104,7 @@ class repeat:
         return (self.page_head + " ".join(self.page_body) + self.page_tail)
 
     def POST(self):
+        global repeatfound
         if gfastayes:
             x = web.input()
             rn = x.rn.encode('ascii','ignore')
