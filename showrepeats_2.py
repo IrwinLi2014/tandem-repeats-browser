@@ -26,7 +26,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     rpts = numpy.loadtxt(open("out.csv", "rb"), delimiter=",")
-    lrpts = rpts.shape[1]
+    lrpts = len(rpts.shape)
     rpts = numpy.ndarray.tolist(rpts)
     
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     #cut paste sequence
     if s!="":
         fo = open("myrpts.csv", "w")
-        if lrpts!=3:
+        if lrpts!=2:
             rpts = [rpts]
         for rpt in rpts:
             lwr = int(rpt[0])
