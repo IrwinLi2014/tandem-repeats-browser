@@ -56,74 +56,85 @@ if __name__ == "__main__":
     #print(rpts)
     #print(len(rpts))
 
-    lli = rpts[rn]
-    lli[0] = int(lli[0])
-    lli[1] = int(lli[1])
-    lli[2] = int(lli[2])
-    #[int(a) for a in lli]
+    #cut paste sequence
+    if s!="":
+        fo = open("myrpts.csv", "w")
+        for rpt in rpts:
+            lwr = int(rpt[0])
+            upr = int(rpt[2])
+            myrpt = s[lwr:upr+1]
+            fo.write(myrpt+"\n")
+        fo.close()
+    #input fasta file
+    else:
+        lli = rpts[rn]
+        lli[0] = int(lli[0])
+        lli[1] = int(lli[1])
+        lli[2] = int(lli[2])
+        #[int(a) for a in lli]
 
-    if (s=='' and infile==''):
-        parser.print_help()
-        sys.exit()
-    
-    output=[]
-    bond = int(math.log(w,4))
+        if (s=='' and infile==''):
+            parser.print_help()
+            sys.exit()
+        
+        output=[]
+        bond = int(math.log(w,4))
 
-    fasta_sequences=None
-    if (infile != ''):
-        fasta_sequences = SeqIO.parse(open(infile), 'fasta')
-    if (fasta_sequences==None):
-        fasta_sequences=[s]
-    
-    resi=""
+        fasta_sequences=None
+        if (infile != ''):
+            fasta_sequences = SeqIO.parse(open(infile), 'fasta')
+        if (fasta_sequences==None):
+            fasta_sequences=[s]
+        
+        resi=""
 
 
-    #print the one repeat the user chooses
-    opt = ""
-    i = 0
-    # total = 0
-    done = False
-    for fasta in fasta_sequences:
-        if (infile==''):
-            buffer = fasta.upper()
-        else:
-            buffer = resi + str(fasta.seq).upper().strip('N')
-        if (len(buffer)<w):
-            resi = buffer
-            continue
-        #  local index
-        j = 0
-        while (int(w*(j+1)*3/4)<=len(buffer)):
-            s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
+        #print the one repeat the user chooses
+        opt = ""
+        i = 0
+        # total = 0
+        done = False
+        for fasta in fasta_sequences:
+            if (infile==''):
+                buffer = fasta.upper()
+            else:
+                buffer = resi + str(fasta.seq).upper().strip('N')
+            if (len(buffer)<w):
+                resi = buffer
+                continue
+            #  local index
+            j = 0
+            while (int(w*(j+1)*3/4)<=len(buffer)):
+                s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
 
-            if lli[0]>=0 and lli[0]<w:
-                lwr = int(lli[0])
-                upr = int(lli[2])
-                if upr < w:
-                    opt = opt + s[lwr:upr+1]
-                    done = True
+                if lli[0]>=0 and lli[0]<w:
+                    lwr = int(lli[0])
+                    upr = int(lli[2])
+                    if upr < w:
+                        opt = opt + s[lwr:upr+1]
+                        done = True
+                        break
+                    else:
+                        opt = opt + s[lwr:]
+                        lli[0] = 0
+                        lli[2] = lli[2]-w
+                        j+=1
+                        i+=1
+                        continue
+                
+                lli[0] = lli[0] - w
+                lli[2] = lli[2] - w
+
+                j+=1
+                i+=1
+                if done:
                     break
-                else:
-                    opt = opt + s[lwr:]
-                    lli[0] = 0
-                    lli[2] = lli[2]-w
-                    j+=1
-                    i+=1
-                    continue
-            
-            lli[0] = lli[0] - w
-            lli[2] = lli[2] - w
-
-            j+=1
-            i+=1
+            resi=buffer[int(j*w*3/4):]
             if done:
                 break
-        resi=buffer[int(j*w*3/4):]
-        if done:
-            break
-    #if(len(resi)>0):
-        #print(resi)
+        #if(len(resi)>0):
+            #print(resi)
 
-    print("No. " + str(rn) + " of the repeats found: " + str(opt))
+        print("No. " + str(rn) + " of the repeats found: " + str(opt))
 
 

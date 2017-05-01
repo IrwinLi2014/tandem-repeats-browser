@@ -15,6 +15,7 @@ gw = 0
 ga = 0
 gb = 0
 repeatfound=None
+myseq = ""  #cut and paste sequence
 
 class index:
     def GET(self):
@@ -38,11 +39,13 @@ class index:
         global gb
         gb = bond
         global gfastayes
+        global myseq
         if x['fileselect']=="Upload file in FASTA format" and x.myfile.file:
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
             destFile.close()
         if x['fileselect']=="Cut and paste sequence":
+            myseq = x.seq.encode('ascii','ignore')
             gfastayes = False
             command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + alph + " -s " + x.seq.encode('ascii','ignore') + " -b " + bond
         print('command', command)
@@ -116,7 +119,10 @@ class repeat:
             rn = x.rn.encode('ascii','ignore')
             if rn == "":
                 rn = '0'
-            command = "python3 ./showrepeats.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
+            if gfastayes:
+                command = "python3 ./showrepeats.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -i input.fna > repeat_found"
+            else:
+                command = "python3 ./showrepeats.py -rn " + rn + " -m " + str(gm) + " -w " + str(gw) + " -a " + str(ga) + " -b " + str(gb) + " -s " + myseq
             subprocess.call(command, shell=True)
             with open("repeat_found", 'rb') as f:
                 repeatfound = f.read()
