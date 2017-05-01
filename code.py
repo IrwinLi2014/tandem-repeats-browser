@@ -24,14 +24,16 @@ class index:
 #</body></html>
 
     def POST(self):
-        x = web.input(myfile={}, alpha='ATCG', cutpasteyes='')
+        x = web.input(myfile={}, alpha='ATCG')
+
+        print(x['fileselect'])
         command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + x.alpha.encode('ascii','ignore') + " -i input.fna"
-	    print(command)
-        if x.fileyes and x.myfile.file:
+        print(command)
+        if x.fileselect.fileyes and x.myfile.file:
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
             destFile.close()
-        if x.cutpasteyes!='':
+        if x.fileselect.cutpasteyes!='':
             command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + x.alpha.encode('ascii','ignore') + " -s " + x.seq.encode('ascii','ignore')
         subprocess.call(command, shell=True)
         #web.debug(x['myfile'].value) # This is the file contents
