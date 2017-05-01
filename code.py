@@ -24,16 +24,16 @@ class index:
 #</body></html>
 
     def POST(self):
-        x = web.input(myfile={}, alpha='ATCG')
-        command = "python3 ./tandem.py -m %s -w %s -a %s -i input.fna", (x.maxtolerance, x.windowsize, x.alpha)
+        x = web.input(myfile={}, alpha='ATCG', cutpasteyes='')
+        command = "python3 ./tandem.py -m %s -w %s -a %s -i input.fna", (x.maxtolerance.encode('ascii','ignore'), x.windowsize.encode('ascii','ignore'), x.alpha.encode('ascii','ignore'))
+	print(command)
         if x.fileyes and x.myfile.file:
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
             destFile.close()
-        if x.cutpasteyes:
-            command = "python3 ./tandem.py -m %s -w %s -a %s -s %s", (x.maxtolerance, x.windowsize, x.alpha, x.seq)
+        if x.cutpasteyes!='':
+            command = "python3 ./tandem.py -m %s -w %s -a %s -s %s", (x.maxtolerance.encode('ascii','ignore'), x.windowsize.encode('ascii','ignore'), x.alpha.encode('ascii','ignore'), x.seq.encode('ascii','ignore'))
         subprocess.call(command, shell=True)
-        #web.debug(x['myfile'].filename) # This is the filename
         #web.debug(x['myfile'].value) # This is the file contents
         #web.debug(x['myfile'].file.read()) # Or use a file(-like) object
 
