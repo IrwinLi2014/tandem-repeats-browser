@@ -283,10 +283,10 @@ if __name__ == "__main__":
         resi=buffer[int(j*w*3/4):]
     if(len(resi)>0):
         if (lower_bond>bond+1):
-            output.append(search_long(int(i*3*w/4), lower_bond, resi, m, 'ATCG'))
+            output.append(search_long(int(i*3*w/4), lower_bond, resi, m, alphabet))
         else:
-            output.append(search_long(int(i*3*w/4), bond+1, resi, m, 'ATCG'))
-        search_short(output[i], resi, int(i*3*w/4), bond+1, lower_bond, m, 'ATCG')
+            output.append(search_long(int(i*3*w/4), bond+1, resi, m, alphabet))
+        search_short(output[i], resi, int(i*3*w/4), bond+1, lower_bond, m, alphabet)
     stitch(output, w, float(3/4))
     fo = open(outfile, "w")
     for w in output:
