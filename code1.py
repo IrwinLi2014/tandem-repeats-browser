@@ -9,10 +9,10 @@ urls = (
 )
 
 gfastayes = True
-gm
-gw
-ga
-gb
+gm = 0
+gw = 0
+ga = 0
+gb = 0
 
 class index:
     def GET(self):
