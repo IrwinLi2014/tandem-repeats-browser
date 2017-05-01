@@ -35,12 +35,13 @@ class index:
         ga = alph
         global gb
         gb = bond
+        global gfastayes
         if x['fileselect']=="Upload file in FASTA format" and x.myfile.file:
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
             destFile.close()
         if x['fileselect']=="Cut and paste sequence":
-            global gfastayes = False
+            gfastayes = False
             command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + alph + " -s " + x.seq.encode('ascii','ignore') + " -b " + bond
         print('command', command)
         subprocess.call(command, shell=True)
