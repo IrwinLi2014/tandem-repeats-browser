@@ -56,7 +56,8 @@ if __name__ == "__main__":
         #[int(a) for a in lli]
         start = int(lli[0])
         end = int(lli[2])
-        s_len = end-start+1
+        str_len = end-start+1
+        to_be_read = end-start+1
 
         if (s=='' and infile==''):
             parser.print_help()
@@ -80,16 +81,18 @@ if __name__ == "__main__":
                 buffer = fasta.upper()
             else:
                 buffer = resi + str(fasta.seq).upper().strip('N')
-            if (len(buffer)>=s_len):
-                opt += buffer[:s_len]
-                print("No. " + str(rn) + " of the repeats found: " + str(opt))
-                exit()
-            else:
-                opt += buffer
-                s_len -= len(buffer)
+            if (i + len(buffer)<start):
+                i += len(buffer)
                 continue
+            else:
+                opt += buffer[start-i:]
+                if len(opt)>str_len:
+                    print("No. " + str(rn) + " of the repeats found: " + opt[:str_len])
+                    exit()
+                else:
+                    continue
 
-        print("not available")
+        print("not available\n")
         exit()           
 
 
