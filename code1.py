@@ -27,10 +27,14 @@ class index:
         if bond == "":
             bond = '0'
         command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + alph + " -i input.fna -b " + bond
-        global gm = x.maxtolerance.encode('ascii','ignore')
-        global gw = x.windowsize.encode('ascii','ignore')
-        global ga = alph
-        global gb = bond
+        global gm
+        gm = x.maxtolerance.encode('ascii','ignore')
+        global gw
+        gw = x.windowsize.encode('ascii','ignore')
+        global ga
+        ga = alph
+        global gb
+        gb = bond
         if x['fileselect']=="Upload file in FASTA format" and x.myfile.file:
             destFile = open('./input.fna', 'wb')
             destFile.write(x.myfile.file.read())
