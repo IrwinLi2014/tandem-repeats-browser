@@ -26,10 +26,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     rpts = numpy.loadtxt(open("out.csv", "rb"), delimiter=",")
-    lenrpts = len(rpts)
     rpts = numpy.ndarray.tolist(rpts)
-    if lenrpts==1:
-        rpts = [rpts]
+    print(rpts.shape)
 
     m=args.mismatch
     w=args.window
