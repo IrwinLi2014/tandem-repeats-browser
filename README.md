@@ -63,7 +63,7 @@ When no output file is specified, by default the output will be stored in output
 
 > repeat start index, repeat pattern end index, whole repeat end index
 
-A more recommended way is to test through its web user interface, which dynamically displays all found repeats after storing their indices.
+## A more recommended way is to test through its web user interface, which dynamically displays all found repeats after storing their indices.
 
 Launch the server locally using the following:
 
