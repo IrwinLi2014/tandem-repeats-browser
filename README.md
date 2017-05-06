@@ -11,7 +11,7 @@ Please be sure to install the following dependencies, before running the program
 
 # Usage
 
-##This program runs on Python 2.  
+## This program runs on Python 2.  
 Running the following command on the command line displays the help information for its command line usage:
 
 > python2 tandem.py --help
