@@ -15,26 +15,26 @@ This program runs on Python 2.  Running the following command on the command lin
 
 > python2 tandem.py --help
 >
-> usage: tandem.py [-h] [-m MISMATCH] [-w WINDOW] [-s SEQUENCE] [-a ALPHABET]
->                 [-i INPUT] [-o OUTPUT] [-b BOND]
->
->Finding tandem repeats.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -m MISMATCH, --mismatch MISMATCH
-                        Mismatch tolerance in percentage.
-  -w WINDOW, --window WINDOW
-                        Window size.
-  -s SEQUENCE, --sequence SEQUENCE
-                        sequence to be searched
-  -a ALPHABET, --alphabet ALPHABET
-                        sequence to be searched
-  -i INPUT, --input INPUT
-                        input file
-  -o OUTPUT, --output OUTPUT
-                        output file
-  -b BOND, --bond BOND  lower boundary
+>>usage: tandem.py [-h] [-m MISMATCH] [-w WINDOW] [-s SEQUENCE] [-a ALPHABET]
+>>                 [-i INPUT] [-o OUTPUT] [-b BOND]
+>>
+>>Finding tandem repeats.
+>>
+>>optional arguments:
+>>  -h, --help            show this help message and exit
+>>  -m MISMATCH, --mismatch MISMATCH
+>>                        Mismatch tolerance in percentage.
+>>  -w WINDOW, --window WINDOW
+>>                        Window size.
+>>  -s SEQUENCE, --sequence SEQUENCE
+>>                        sequence to be searched
+>>  -a ALPHABET, --alphabet ALPHABET
+>>                        sequence to be searched
+>>  -i INPUT, --input INPUT
+>>                        input file
+>>  -o OUTPUT, --output OUTPUT
+>>                        output file
+>>  -b BOND, --bond BOND  lower boundary
 
 
 
