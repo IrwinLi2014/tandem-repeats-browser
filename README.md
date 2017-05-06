@@ -69,6 +69,23 @@ Launch the server locally using the following:
 
 > python2 server.py
 
+The default port is: <http://0.0.0.0:8080/>
+
+
+# Project Composition
+
+This project is supported by the Amazon Web Services, and can be freely accessed by all user over the internet when the server is up.  This is not needed when testing the server locally.
+
+In this package:
+
+tandem.py        The main algorithm to find tandem repeats, and store their indices into an output file.
+
+server.py        The server to launch the program's web interface.
+
+showrepeats_2.py    Reads the indices of found repeats stored in output.csv, converts them into readable repeats, and displays them dynamically on the web interface.  This functionality only supports the default output filename (output.csv) currently.
+
+input.fna        A portion of the encoding of chromosome 9 that can be used as an input sequence file, provided for testing purposes.
+
 
 
 # Video Demo
