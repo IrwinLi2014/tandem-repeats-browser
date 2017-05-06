@@ -50,6 +50,14 @@ Running the following command on the command line displays the help information 
 >>
 >>  -b BOND, --bond BOND  lower boundary
 
+A sample usage of the command line version may be:
+
+> python2 tandem.py -m 0 -w 5 -s ATCGCGTTAAAAAGAGGGGTATATATAAATGACCTA
+
+When this line is run, the default output file will be stored in output.csv, with each line representing the indices of one tandem repeat.
+
+> repeat start index, repeat pattern end index, whole repeat end index
+
 
 
 # Video Demo
