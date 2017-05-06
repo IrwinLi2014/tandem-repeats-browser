@@ -9,6 +9,8 @@ Please be sure to install the following dependencies, before running the program
 * sudo pip install biopython
 > Replace pip with pip2 or pip3 if the program fails after running the above lines.
 
+A powerful machine is prefered. For example, we used Amazon Web Services (<https://aws.amazon.com/free/>) for testing.
+
 
 # Usage
 
