@@ -7,6 +7,7 @@ Please be sure to install the following dependencies, before running the program
 * sudo pip install web.py
 * sudo pip install numpy
 * sudo pip install biopython
+Replace pip with pip2 or pip3 if the program fails after running the above lines.
 
 
 # Usage
@@ -64,7 +65,7 @@ When no output file is specified, by default the output will be stored in output
 
 A more recommended way is to test through its web user interface, which dynamically displays all found repeats after storing their indices.
 
-Launch the server using the following:
+Launch the server locally using the following:
 
 > python2 server.py
 
