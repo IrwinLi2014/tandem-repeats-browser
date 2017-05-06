@@ -54,9 +54,19 @@ A sample usage of the command line version may be:
 
 > python2 tandem.py -m 0 -w 5 -s ATCGCGTTAAAAAGAGGGGTATATATAAATGACCTA
 
-When this line is run, the default output file will be stored in output.csv, with each line representing the indices of one tandem repeat.
+or
+
+> python2 tandem.py -m 5 -w 1000 -a ATCG -i input.fna
+
+When no output file is specified, by default the output will be stored in output.csv, with each line representing the indices of one tandem repeat.
 
 > repeat start index, repeat pattern end index, whole repeat end index
+
+A more recommended way is to test through its web user interface, which dynamically displays all found repeats after storing their indices.
+
+Launch the server using the following:
+
+> python2 server.py
 
 
 
