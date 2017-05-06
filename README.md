@@ -17,17 +17,17 @@ Running the following command on the command line displays the help information 
 > python2 tandem.py --help
 >
 >>usage: tandem.py [-h] [-m MISMATCH] [-w WINDOW] [-s SEQUENCE] [-a ALPHABET]
->>
+>
 >>                 [-i INPUT] [-o OUTPUT] [-b BOND]
->>
+>
 >>Finding tandem repeats.
->>
+>
 >>optional arguments:
->>
+>
 >>  -h, --help            show this help message and exit
->>
+>
 >>  -m MISMATCH, --mismatch MISMATCH
->>
+>
 >>                        Mismatch tolerance in percentage.
 >>
 >>  -w WINDOW, --window WINDOW
