@@ -10,3 +10,6 @@ class TandemRepeatesBrowser:
 #########
 # TESTS #
 #########
+
+    def sample_test(self):
+        self.assertEqual(200,200)
