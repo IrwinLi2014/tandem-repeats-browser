@@ -1,4 +1,5 @@
 import pytest
+import unittest
 
 class TandemRepeatesBrowser(unittest.TestCase):
     def setUp(self):
@@ -11,5 +12,5 @@ class TandemRepeatesBrowser(unittest.TestCase):
 # TESTS #
 #########
 
-    def sample_test(self):
+    def test_sample(self):
         self.assertEqual(200,200)
