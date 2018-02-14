@@ -1,6 +1,6 @@
 import pytest
 
-class TandemRepeatesBrowser:
+class TandemRepeatesBrowser(unittest.TestCase):
     def setUp(self):
         pass
 
