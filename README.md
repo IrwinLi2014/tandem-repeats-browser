@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/IrwinLi2014/tandem-repeats-browser.svg?branch=master)](https://travis-ci.org/IrwinLi2014/tandem-repeats-browser)
+
 # tandem-repeats-browser
 A tandem repeats finder designed for human genome, implemented by Chuchu Ding and Dejia Tang.
 
