@@ -2,6 +2,7 @@ import web
 import shutil
 import subprocess
 import csv
+import tandem
 render = web.template.render('webpage/')
 
 urls = (
@@ -29,6 +30,7 @@ class index:
             alph = 'ATCG'
         if bond == "":
             bond = '0'
+        # tandem.tandem_repeats(x.maxtolerance.encode('ascii','ignore'), x.windowsize.encode('ascii','ignore'), alphabet=alph, infile=input.fna, lower_bond=bond)
         command = "python3 ./tandem.py -m " + x.maxtolerance.encode('ascii','ignore') + " -w " + x.windowsize.encode('ascii','ignore') + " -a " + alph + " -i input.fna -b " + bond
         global gm
         gm = x.maxtolerance.encode('ascii','ignore')

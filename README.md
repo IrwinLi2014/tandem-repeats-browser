@@ -1,15 +1,14 @@
 [![Build Status](https://travis-ci.org/IrwinLi2014/tandem-repeats-browser.svg?branch=master)](https://travis-ci.org/IrwinLi2014/tandem-repeats-browser)
 
 # tandem-repeats-browser
-A tandem repeats finder designed for human genome, implemented by Chuchu Ding and Dejia Tang.
+A tandem repeats finder designed for human genome, implemented by Chuchu Ding, Dejia Tang, and Irwin Li.
 
+This project runs in Python2.
 
 # Dependencies
 Please be sure to install the following dependencies, before running the program and testing it on either command line or its web user interface:
-* sudo pip install web.py
-* sudo pip install numpy
-* sudo pip install biopython
-> Replace pip with pip2 or pip3 if the program fails after running the above lines.
+* pip install -r requirements.txt
+> Replace pip with pip2 if the program fails after running the above lines.
 
 A powerful machine is prefered. For example, we used Amazon Web Services (<https://aws.amazon.com/free/>) for testing.
 
