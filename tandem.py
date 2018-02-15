@@ -2,7 +2,7 @@
 """
 Seach for tandem repeats with mismatch and partial repeats tolerance.
 
-Authors: Chuchu Ding; Dejia Tang
+Authors: Chuchu Ding; Dejia Tang; Irwin Li
 
 Reference:
 
@@ -219,6 +219,70 @@ def printrepeats(s, output):
 # Input: L - list of results to be stitched together ([[]])
 #def stitch():
 
+
+def tandem_repeats(m=0, w=-1, s=None, alphabet='ATCG', infile=None, outfile='out.csv', lower_bond=0):
+    # will only be called either as an external library function or after command line input
+    # the not handles both empty string and None cases
+    if (not s and not infile):
+        # print "Invalid input"
+        sys.exit()
+
+    output = []
+    bond = int(math.log(w,4))
+
+    fasta_sequences = None
+    if (infile):
+        fasta_sequences = SeqIO.parse(open(infile), 'fasta')
+    if (fasta_sequences == None):
+        fasta_sequences = [s]
+
+    resi = ""
+    # window index
+    i = 0
+    # total = 0
+    for fasta in fasta_sequences:
+        if (not infile):
+            buffer = fasta.upper()
+        else:
+            buffer = resi + str(fasta.seq).upper().strip('N')
+        if (len(buffer)<w):
+            resi = buffer
+            continue
+        #  local index
+        j = 0
+        while (int(w*(j+1)*3/4)<=len(buffer)):
+            print("j", j)
+            print(int(w*j*3/4), int(w*j*3/4))
+            s=buffer[int(w*j*3/4):int(w*j*3/4)+w]
+            print("s",s)
+            if (lower_bond>bond+1):
+                output.append(search_long(int(i*3*w/4), lower_bond, s, m, alphabet))
+            else:
+                output.append(search_long(int(i*3*w/4), bond+1, s, m, alphabet))
+            search_short(output[i], s, int(i*3*w/4), bond+1, lower_bond, m, alphabet)
+            print(i+1,"window finished")
+            sys.stdout.flush()
+
+            j+=1
+            i+=1
+        resi=buffer[int(j*w*3/4)+w:]
+    if(len(resi)>0):
+        if (lower_bond>bond+1):
+            output.append(search_long(int(i*3*w/4), lower_bond, resi, m, alphabet))
+        else:
+            output.append(search_long(int(i*3*w/4), bond+1, resi, m, alphabet))
+        search_short(output[i], resi, int(i*3*w/4), bond+1, lower_bond, m, alphabet)
+    print(output)
+    stitch(output, w, float(3/4))
+    print(output)
+    stitch(output, w, float(3/4))
+    fo = open(outfile, "w")
+    for w in output:
+        for r in w:
+            fo.write(str(r[0])+","+str(r[1])+","+str(r[2])+"\n");
+    fo.close()
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Finding tandem repeats.')
@@ -244,7 +308,10 @@ if __name__ == "__main__":
     if (s=='' and infile==''):
         parser.print_help()
         sys.exit()
-    
+
+    tandem_repeats(m,w,s,alphabet,infile,outfile,lower_bond)
+
+    """    
     output=[]
     bond = int(math.log(w,4))
 
@@ -300,4 +367,5 @@ if __name__ == "__main__":
             fo.write(str(r[0])+","+str(r[1])+","+str(r[2])+"\n");
     fo.close()
 
+    """
 

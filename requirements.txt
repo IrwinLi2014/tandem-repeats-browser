@@ -1,4 +1,4 @@
 numpy
 web.py
-biopython
+biopython==1.70
 pytest
